@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Organization;
 use App\Models\OrganizationProject;
 use App\Models\Role;
@@ -13,8 +14,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $organizations = Organization::paginate(5);
-        $projects = OrganizationProject::all();
-        return view('dashboard', compact(['organizations','projects']));
+        // $organizations = Organization::paginate(5);
+        $areas = Area::all();
+        return view('dashboard', compact('areas'));
     }
 }

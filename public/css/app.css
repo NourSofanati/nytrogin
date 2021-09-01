@@ -1265,6 +1265,10 @@ select {
   grid-column: span 5 / span 5;
 }
 
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
 .row-span-4 {
   grid-row: span 4 / span 4;
 }
@@ -1803,6 +1807,10 @@ select {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .grid-rows-2 {
   grid-template-rows: repeat(2, minmax(0, 1fr));
 }
@@ -1849,6 +1857,10 @@ select {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-items-center {
+  justify-items: center;
 }
 
 .gap-6 {
@@ -1941,6 +1953,10 @@ select {
 
 .rounded-2xl {
   border-radius: 1rem;
+}
+
+.rounded-\[50px\] {
+  border-radius: 50px;
 }
 
 .rounded-l-md {
@@ -2062,6 +2078,11 @@ select {
 .border-\[\#71579A\] {
   --tw-border-opacity: 1;
   border-color: rgba(113, 87, 154, var(--tw-border-opacity));
+}
+
+.border-\[\#673B8C\] {
+  --tw-border-opacity: 1;
+  border-color: rgba(103, 59, 140, var(--tw-border-opacity));
 }
 
 .border-b-gray-400 {
@@ -2209,6 +2230,20 @@ select {
   background-color: rgba(229, 230, 231, var(--tw-bg-opacity));
 }
 
+.bg-\[\#673B8C\] {
+  --tw-bg-opacity: 1;
+  background-color: rgba(103, 59, 140, var(--tw-bg-opacity));
+}
+
+.bg-\[\#FBB23A\] {
+  --tw-bg-opacity: 1;
+  background-color: rgba(251, 178, 58, var(--tw-bg-opacity));
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
 }
@@ -2342,6 +2377,11 @@ select {
 .py-9 {
   padding-top: 2.25rem;
   padding-bottom: 2.25rem;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .pt-6 {
@@ -2639,6 +2679,11 @@ select {
   color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 
+.text-\[\#673B8C\] {
+  --tw-text-opacity: 1;
+  color: rgba(103, 59, 140, var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration: underline;
 }
@@ -2835,6 +2880,10 @@ select {
   z-index: 10;
 }
 
+.focus\:border-none:focus {
+  border-style: none;
+}
+
 .focus\:border-blue-300:focus {
   --tw-border-opacity: 1;
   border-color: rgba(147, 197, 253, var(--tw-border-opacity));
@@ -2953,6 +3002,10 @@ select {
 
 .focus\:ring-opacity-50:focus {
   --tw-ring-opacity: 0.5;
+}
+
+.active\:border-none:active {
+  border-style: none;
 }
 
 .active\:bg-gray-100:active {
@@ -3289,6 +3342,10 @@ select {
 
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:border-none {

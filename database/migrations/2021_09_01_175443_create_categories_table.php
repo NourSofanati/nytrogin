@@ -1,12 +1,10 @@
 <?php
 
-use App\Models\Project;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectAssignmentsTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +13,10 @@ class CreateProjectAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_assignments', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->text('name');
             $table->timestamps();
-            $table->foreignIdFor(User::class, 'user_id');
-            $table->foreignIdFor(Project::class, 'project_id');
-            $table->text('assigned_as');
         });
     }
 
@@ -31,6 +27,6 @@ class CreateProjectAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_assignments');
+        Schema::dropIfExists('categories');
     }
 }

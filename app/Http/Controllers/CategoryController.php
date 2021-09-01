@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Category;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,24 +41,40 @@ class AreaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Shows the projects in an area
      *
-     * @param  \App\Models\Area  $area
+     * @return \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
+    public function show_projects(Request $request)
     {
-        $categories = Category::all();
-        return view('area.show',compact('area','categories'));
+        $area = Area::find($request->area_id);
+        $cat = Category::find($request->cat_id);
+        $projects = Project::where('area_id', $area->id)->where('cat_id', $cat->id)->get();
+        return view('area.projects', compact('area', 'cat', 'projects'));
     }
+
+    /**
+     * Shows the project creation page.
+     *
+     * @return \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function create_project(Request $request)
+    {
+        $area = Area::find($request->area_id);
+        $cat = Category::find($request->cat_id);
+        return view('area.create_project', compact('area', 'cat'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Area  $area
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit(Category $category)
     {
         //
     }
@@ -66,10 +83,10 @@ class AreaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Area  $area
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -77,10 +94,10 @@ class AreaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Area  $area
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Area $area)
+    public function destroy(Category $category)
     {
         //
     }

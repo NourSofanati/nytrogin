@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckItemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
@@ -27,6 +29,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('category/projects', [CategoryController::class, 'show_projects'])->name('show_projects');
+    Route::post('category/create_project', [CategoryController::class, 'create_project'])->name('create_project');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('projects', OrganizationProjectController::class);
     Route::get('organizations/get_by_id', [OrganizationController::class, 'get_by_id'])->name('organizations.get_by_id');
@@ -47,6 +51,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('notifications/read', [NotificationController::class, 'mark_read'])->name('notifications.read');
     Route::resource('checklist', ProjectChecklistController::class);
     Route::resource('organizations', OrganizationController::class);
+    Route::resource('area', AreaController::class);
+    Route::resource('category', CategoryController::class);
 });
 Route::get('search', function (Request $request) {
     $query = $request->text; // <-- Change the query for testing.

@@ -5,14 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model
+class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'alias'];
-    public function organizations()
-    {
-        return $this->hasMany(Organization::class, 'area_id');
-    }
     public function projects()
     {
         return $this->hasMany(Project::class, 'area_id');

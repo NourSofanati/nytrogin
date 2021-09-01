@@ -34,22 +34,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Area::create([
-            'name' => 'Alryadh',
+            'name' => 'المنطقة الشمالية و الشرقية',
         ]);
         Area::create([
-            'name' => 'Makah',
+            'name' => 'المنطقة الوسطى',
         ]);
         Area::create([
-            'name' => 'Sharkyah',
+            'name' => 'المنطقة الغربية والجنوبية',
         ]);
-        \App\Models\Organization::factory(5)->create(['area_id' => 1]);
-        \App\Models\Organization::factory(5)->create(['area_id' => 2]);
-        \App\Models\Organization::factory(5)->create(['area_id' => 3]);
-        // \App\Models\User::factory(1)->create(['role_id' => Role::IS_ADMIN]);
-        // \App\Models\User::factory(5)->create(['role_id' => Role::IS_PROCURATOR]);
-        // \App\Models\User::factory(5)->create(['role_id' => Role::IS_SUPERVISOR]);
-        // \App\Models\User::factory(20)->create(['role_id' => Role::IS_INSPECTOR]);
-        // \App\Models\User::factory(20)->create(['role_id' => Role::IS_ORGANIZATION]);
+
         User::create([
             'name' => 'عبدالله الحمديان',
             'email' => 'founder@nytrogin.com',
@@ -74,7 +67,6 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role_id' => Role::IS_PROCURATOR
         ]);
-
         User::create([
             'name' => 'سليمان النصيان',
             'email' => 'supervisor1@nytrogin.com',

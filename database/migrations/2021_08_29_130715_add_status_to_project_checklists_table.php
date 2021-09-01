@@ -14,7 +14,7 @@ class AddStatusToProjectChecklistsTable extends Migration
     public function up()
     {
         Schema::table('project_checklists', function (Blueprint $table) {
-            $table->text('status')->default('draft');
+            $table->text('status');
         });
     }
 

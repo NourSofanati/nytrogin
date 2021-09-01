@@ -62,47 +62,43 @@
             <p class="text-xl text-gray-500">المشاريع المؤرشفة</p>
             <div class=" w-10/12 mx-auto my-auto border-b-2"></div>
         </div>
-        <div class="grid grid-cols-3 gap-8 ">
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
             {{-- <div class="bg-white h-[250px] rounded-lg p-4  border-2 border-[#E9EAEB]"></div> --}}
-            @forelse ($projects as $project)
-                @can('view', $project)
-                    <a class="h-[250px] rounded-md p-6 flex flex-col " style="background: repeating-linear-gradient(
-                                    45deg,
-                                    #F6F8FC,
-                                    #F6F8FC 10px,
-                                    #EDEFF3 10px,
-                                    #EDEFF3 20px
-                                  );" href="{{ route('projects.show', $project) }}">
-                        <div class="flex justify-end w-full gap-3">
-                            <span class="material-icons text-gray-400">
-                                star_border
-                            </span>
-                            <span class="material-icons text-gray-400">
-                                more_horiz
-                            </span>
+
+            <a class="h-[250px] rounded-md p-6 flex flex-col " style="background: repeating-linear-gradient(
+                                                    45deg,
+                                                    #F6F8FC,
+                                                    #F6F8FC 10px,
+                                                    #EDEFF3 10px,
+                                                    #EDEFF3 20px
+                                                  );">
+                <div class="flex justify-end w-full gap-3">
+                    <span class="material-icons text-gray-400">
+                        star_border
+                    </span>
+                    <span class="material-icons text-gray-400">
+                        more_horiz
+                    </span>
+                </div>
+                <div class="flex flex-col  text-gray-500">
+                    <h1 class="text-2xl ">
+                        Nowaar Entertainment
+                    </h1>
+                    <div class="flex gap-2 mt-3">
+                        <div class="bg-[#EDEFF3] tracking-tighter text-gray-400 font-bold px-3 py-1 rounded-full">
+                            فعالية حية
                         </div>
-                        <div class="flex flex-col  text-gray-500">
-                            <h1 class="text-2xl ">
-                                Nowaar Entertainment
-                            </h1>
-                            <div class="flex gap-2 mt-3">
-                                <div class="bg-[#EDEFF3] tracking-tighter text-gray-400 font-bold px-3 py-1 rounded-full">
-                                    فعالية حية
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col text-gray-500 font-normal mt-auto">
-                            <p>بدء المشروع:
-                                <span>{{ \Carbon\Carbon::parse('2021-01-01')->diffForHumans() }}</span>
-                            </p>
-                            <p>تسليم المشروع:
-                                <span>{{ \Carbon\Carbon::parse('2021-05-02')->diffForHumans() }}</span>
-                            </p>
-                        </div>
-                    </a>
-                @endcan
-            @empty
-            @endforelse
+                    </div>
+                </div>
+                <div class="flex flex-col text-gray-500 font-normal mt-auto">
+                    <p>بدء المشروع:
+                        <span>{{ \Carbon\Carbon::parse('2021-01-01')->diffForHumans() }}</span>
+                    </p>
+                    <p>تسليم المشروع:
+                        <span>{{ \Carbon\Carbon::parse('2021-05-02')->diffForHumans() }}</span>
+                    </p>
+                </div>
+            </a>
         </div>
     </div>
 </x-app-layout>

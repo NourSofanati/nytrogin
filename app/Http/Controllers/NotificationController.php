@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -81,5 +82,12 @@ class NotificationController extends Controller
     public function destroy(Notification $notification)
     {
         //
+    }
+    public function mark_read(Request $request)
+    {
+        $notification = Notification::find($request->notification_id);
+        $notification->read_at = Carbon::now();
+        $notification->save();
+        return response()->json(['status' => 'ok']);
     }
 }

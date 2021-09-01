@@ -10,7 +10,10 @@ class ProjectChecklist extends Model
     use HasFactory;
     protected $fillable = ['project_id', 'notes', 'status'];
 
-
+    public function project()
+    {
+        return $this->belongsTo(OrganizationProject::class, 'project_id');
+    }
     public function items()
     {
         return $this->hasMany(CheckItem::class, 'checklist_id');

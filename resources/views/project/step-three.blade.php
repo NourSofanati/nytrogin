@@ -8,7 +8,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl px-2 py-5 sm:rounded-lg">
+            <div class="bg-white overflow-hidden border-2 rounded p-4 sm:rounded-lg">
                 <div class="text-2xl flex  justify-center">
                     <div class="ring-[#FDBB3E] z-10 ring-2 text-[#FDBB3E] px-4 py-2 rounded-full">الخطوة الثالثة</div>
                     <div class="h-12 w-12 rounded-full z-0 bg-[#7056A1] flex justify-center">
@@ -25,12 +25,12 @@
                         @csrf
                         <input type="hidden" name="project_id" value="{{ $project->id }}" required>
                         <div class="flex justify-center">
-                            <div id="inspectors" class="flex flex-col ">
+                            <div id="inspectors" class="flex flex-col w-full md:w-1/2">
                                 <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#7056A1]">
                                 </div>
                             </div>
                         </div>
-                        <x-jet-button id="submitBtn" class="hidden">
+                        <x-jet-button id="submitBtn" class="hidden mx-auto">
                             تعيين المراقبين
                         </x-jet-button>
                     </form>

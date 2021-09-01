@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl p-2 sm:rounded-lg">
+            <div class="bg-white overflow-hidden border-2 rounded p-4 sm:rounded-lg">
                 <div class="text-2xl flex  justify-center">
                     <div class="ring-[#FDBB3E] z-10 ring-2 text-[#FDBB3E] px-4 py-2 rounded-full">الخطوة الأولى</div>
                     <div class="h-12 w-12 rounded-full z-0 bg-[#7056A1] flex justify-center">
@@ -16,7 +16,7 @@
                     {{-- <div class="h-12 w-12 rounded-full bg-[#7056A1]"></div> --}}
 
                 </div>
-                <div class="container p-2 w-1/3 mx-auto text-center text-[#7056A1]">
+                <div class="container p-2 w-full lg:w-1/2 mx-auto text-center py-4 text-[#7056A1]">
                     <form action="{{ route('projects.store') }}" method="post" class="relative ">
                         @csrf
                         <div>
@@ -52,6 +52,7 @@
                                 class="shadow appearance-none border-2 border-[#7056A1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 name="description" id="description" cols="30" rows="10" ></textarea>
                         </div>
+                        <input type="hidden" name="status" value="pending_1" required >
                         <x-jet-button>التالي</x-jet-button>
                     </form>
                 </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CheckItemController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationProjectController;
 use App\Http\Controllers\ProjectChecklistController;
@@ -22,7 +23,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -39,7 +40,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('checklist/request_approval_from_supervisor', [ProjectChecklistController::class, 'request_approval_from_supervisor'])->name('checklist.request_approval_from_supervisor');
     Route::post('checklist/approve_checklist', [ProjectChecklistController::class, 'approve_checklist'])->name('checklist.approve_checklist');
     Route::post('checklist/decline_checklist', [ProjectChecklistController::class, 'decline_checklist'])->name('checklist.decline_checklist');
+    Route::post('checklist/approve_checklist_procurator', [ProjectChecklistController::class, 'approve_checklist_procurator'])->name('checklist.approve_checklist_procurator');
+    Route::post('checklist/decline_checklist_procurator', [ProjectChecklistController::class, 'decline_checklist_procurator'])->name('checklist.decline_checklist_procurator');
+    Route::post('checklist/approve_checklist_admin', [ProjectChecklistController::class, 'approve_checklist_admin'])->name('checklist.approve_checklist_admin');
+    Route::post('checklist/decline_checklist_admin', [ProjectChecklistController::class, 'decline_checklist_admin'])->name('checklist.decline_checklist_admin');
+    Route::post('notifications/read', [NotificationController::class, 'mark_read'])->name('notifications.read');
     Route::resource('checklist', ProjectChecklistController::class);
+    Route::resource('organizations', OrganizationController::class);
 });
 Route::get('search', function (Request $request) {
     $query = $request->text; // <-- Change the query for testing.
@@ -50,6 +57,6 @@ Route::get('search', function (Request $request) {
 })->name('search');
 
 Route::get('notifications', function (Request $request) {
-    $notifications = Notification::all()->where('user_id', auth()->user()->id);
+    $notifications = Notification::all()->where('user_id', auth()->user()->id)->where('read_at', null);
     return $notifications->toArray();
 })->name('notifications');

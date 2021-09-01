@@ -1,25 +1,24 @@
 <nav x-data="{ open: false }"
-    class="bg-white sm:relative absolute left-0 right-0 top-0 bottom-0 w-full md:w-[380px] border-l border-[#E9EAEB]">
+    class=" sm:relative absolute left-0 right-0 top-0 bottom-0 w-full md:w-[380px] border-l border-[#E9EAEB]">
     <!-- Primary Navigation Menu -->
-    <div class="bg-[#FBBC41] w-full flex justify-center">
-        <img src="https://nytrogin.com/wp-content/uploads/2021/02/logo-nytrogin.svg" alt="" srcset="">
+    <div class="w-full flex justify-center p-5">
+        <img src="{{asset('images/logos.png')}}" alt="" srcset="">
     </div>
 
     <div class="flex w-full justify-between px-4 py-4">
         <div class="text-white bg-[#72559D] h-10 w-10 grid place-content-center place-items-center rounded-full">
-            <span class="material-icons">
+            <span class="material-icons" id="hide_sidebar">
                 menu_open
             </span>
         </div>
         <div class="text-gray-400 h-10 w-10 grid place-content-center place-items-center relative">
             <span
                 class="animate-ping absolute inline-flex h-3 w-3 top-1 right-1 rounded-full bg-purple-400 opacity-75 notif-ping hidden"></span>
-            <span
-                class="absolute inline-flex rounded-full h-3 w-3 top-1 right-1 bg-purple-500 notif-ping hidden"></span>
+            <span class="absolute inline-flex rounded-full h-3 w-3 top-1 right-1 bg-purple-500 notif-ping hidden"></span>
             <span class="material-icons relative cursor-pointer" id="notification_button">
                 notifications
             </span>
-            <div class="w-[250px] bg-white border-2 shadow-xl absolute top-10  hidden p-5" id="notifications">
+            <div class="w-[350px] bg-white border-2 shadow-xl absolute top-10  hidden p-5" id="notifications">
             </div>
         </div>
 
@@ -39,7 +38,7 @@
         <div class="text-2xl font-bold text-[#71579A] mt-5">{{ auth()->user()->name }} </div>
         <span class="text-gray-400 text-xl capitalize font-normal mb-6">{{ __(auth()->user()->role->name) }}</span>
     </div>
-    <div class="">
+    <div class="___class_+?15___">
         <div class="flex flex-col">
             <!-- Navigation Links -->
 
@@ -61,7 +60,8 @@
                 </span>
                 {{ __('اعدادات حسابي') }}
             </x-jet-nav-link>
-            <x-jet-nav-link href="{{ route('dashboard') }}">
+            <x-jet-nav-link href="{{ route('organizations.index') }}"
+                :active="request()->routeIs('organizations.index')">
                 <span class="material-icons ml-6">
                     location_city
                 </span>
@@ -82,10 +82,10 @@
             <button @click="open = ! open"
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    {{-- <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -174,7 +174,7 @@
                 @endif
             </div>
         </div>
-    </div>
+    </div> --}}
     @section('footerScripts2')
         <script>
             let isShown = false;
@@ -199,16 +199,50 @@
                         if (Object.values(notifications).length > 0) {
                             $('.notif-ping').fadeIn();
                         }
-                        console.log(Object.values(notifications));
+                        // console.log(Object.values(notifications));
                         $('#notifications').html('');
                         Object.values(notifications).forEach(notification => {
                             let notiHtml =
-                                `<a href="${notification.link}"><p class=" text-black">${notification.body}</p><br><span></span></a>`;
+                                `<div class="grid grid-cols-6 w-full place-items-center">
+                                    <a href="${notification.link}" class="col-span-5">
+                                        <p class=" text-black">${notification.body}</p>
+                                    </a>
+                                    <form class="notif_read_button" data-id="${notification.id}">
+
+                                        <input type="hidden" name="notification_id" value="${notification.id}"/>
+                                        <button type="submit"><span class="material-icons">visibility</span></button>
+                                    </form>
+                                </div>`;
                             $('#notifications').append(notiHtml);
+                        });
+
+                    },
+                    complete: function() {
+                        $('.notif_read_button').submit(function(event) {
+
+                            event.preventDefault();
+                            var fd = new FormData();
+                            fd.append('notification_id', event.target.notification_id.value);
+                            fd.append("_token", "{{ csrf_token() }}");
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ route('notifications.read') }}",
+                                data: fd,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log('read notification successfuly');
+                                }
+                            });
                         });
                     }
                 });
             }
+            setInterval(() => {
+                get_notifications();
+
+            }, 1000);
         </script>
     @endsection
 </nav>

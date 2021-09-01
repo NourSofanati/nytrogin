@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CheckItem;
+use App\Models\Notification;
 use App\Models\ProjectChecklist;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -117,7 +120,7 @@ class ProjectChecklistController extends Controller
             $comment = $item['comment'];
             $disabled = $checklist->status == 'pending' ? 'disabled' : '';
             $html .= "<tr>
-            <td rowspan=\"2\" class=\"text-center border border-b-gray-400\">
+            <td rowspan=\"2\" class=\"text-center border border-b-gray-400 hidden\">
                 $row_num
             </td>
             <td class=\"border\">
@@ -145,23 +148,107 @@ class ProjectChecklistController extends Controller
     public function request_approval_from_supervisor(Request $request)
     {
         $checklist = ProjectChecklist::find($request->checklist_id);
-        $checklist->status = 'pending';
+        $checklist->status = 'pending_2';
         $checklist->save();
+        foreach ($checklist->project->supervisors as $supervisor) {
+            Notification::create([
+                'user_id' => $supervisor->user->id,
+                'body' => 'تم طلب الموافقة من المراقبين لمشروع ' . $checklist->project->organization->name,
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+        toast('تم طلب الموافقة منشرفين','info');
         return redirect()->back();
     }
 
     public function approve_checklist(Request $request)
     {
         $checklist = ProjectChecklist::find($request->checklist_id);
-        $checklist->status = 'approved_' . auth()->user()->role->name;
+        $checklist->status = 'pending_3';
         $checklist->save();
+        foreach ($checklist->project->inspectors as $supervisor) {
+            Notification::create([
+                'user_id' => $supervisor->user->id,
+                'body' => 'تمت الموافقة على القائمة الخاصة بمشروع ' . $checklist->project->organization->name . ' يرجى إعادة النظر في المشروع.',
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+        //$admins = User::all()->where('role_id', Role::IS_ADMIN);
+        $procurators = User::all()->where('role_id', Role::IS_PROCURATOR);
+        foreach ($procurators as $admin) {
+            Notification::create([
+                'user_id' => $admin->id,
+                'body' => 'يرجى الموافقة على تقرير  ' . $checklist->project->organization->name,
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+
         return redirect()->back();
     }
     public function decline_checklist(Request $request)
     {
         $checklist = ProjectChecklist::find($request->checklist_id);
-        $checklist->status = 'declined_' . auth()->user()->role->name;
+        $checklist->status = 'declined_2';
         $checklist->save();
+        foreach ($checklist->project->inspectors as $supervisor) {
+            Notification::create([
+                'user_id' => $supervisor->user->id,
+                'body' => 'تم الرفض على القائمة الخاصة بمشروع ' . $checklist->project->organization->name . ' يرجى إعادة النظر في المشروع.',
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+        return redirect()->back();
+    }
+    public function approve_checklist_procurator(Request $request)
+    {
+        $checklist = ProjectChecklist::find($request->checklist_id);
+        $checklist->status = 'pending_4';
+        $checklist->save();
+        $admins = User::all()->where('role_id', Role::IS_ADMIN);
+        //$procurators = User::all()->where('role_id', Role::IS_PROCURATOR);
+        foreach ($admins as $admin) {
+            Notification::create([
+                'user_id' => $admin->id,
+                'body' => 'يرجى الموافقة على تقرير  ' . $checklist->project->organization->name,
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+        return redirect()->back();
+    }
+    public function decline_checklist_procurator(Request $request)
+    {
+        $checklist = ProjectChecklist::find($request->checklist_id);
+        $checklist->status = 'declined_3';
+        $checklist->save();
+
+        foreach ($checklist->project->assignments as $supervisor) {
+            Notification::create([
+                'user_id' => $supervisor->user->id,
+                'body' => 'تم الرفض على القائمة الخاصة بمشروع ' . $checklist->project->organization->name . ' يرجى إعادة النظر في المشروع.',
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
+        return redirect()->back();
+    }
+    public function approve_checklist_admin(Request $request)
+    {
+        $checklist = ProjectChecklist::find($request->checklist_id);
+        $checklist->status = 'done_5';
+        $checklist->save();
+        return redirect()->back();
+    }
+    public function decline_checklist_admin(Request $request)
+    {
+        $checklist = ProjectChecklist::find($request->checklist_id);
+        $checklist->status = 'declined_4';
+        $checklist->save();
+        foreach ($checklist->project->assignments as $supervisor) {
+            Notification::create([
+                'user_id' => $supervisor->user->id,
+                'body' => 'تم الرفض على القائمة الخاصة بمشروع ' . $checklist->project->organization->name . ' يرجى إعادة النظر في المشروع.',
+                'link' => route('projects.show', $checklist->project),
+            ]);
+        }
         return redirect()->back();
     }
 }

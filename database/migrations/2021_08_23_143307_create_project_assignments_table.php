@@ -20,8 +20,7 @@ class CreateProjectAssignmentsTable extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class, 'user_id');
             $table->foreignIdFor(OrganizationProject::class, 'project_id');
-            $table->text('assigned_as')->default('inspector');
-            $table->integer('priority')->default(1);
+            $table->text('assigned_as');
         });
     }
 

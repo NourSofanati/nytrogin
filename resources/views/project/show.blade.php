@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="py-12 px-6">
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-2">
-            <div class="bg-white h-[250px] rounded-md p-6 flex flex-col border-2 border-[#E9EAEB]">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-2">
+            <div class="bg-white rounded-md p-6 flex flex-col col-span-full lg:col-span-1 border-2 border-[#E9EAEB]">
                 <div class="flex justify-end w-full gap-3">
                     <span class="material-icons text-gray-400">
                         star_border
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col text-gray-500 font-normal mt-auto">
+                <div class="flex flex-col text-gray-500 font-normal mt-8">
                     <p>بدء المشروع:
                         <span>{{ \Carbon\Carbon::parse($project->created_at)->diffForHumans() }}</span>
                     </p>
@@ -35,8 +35,9 @@
                     </p>
                 </div>
             </div>
-            <div class="bg-white h-[250px] rounded-md p-6 grid grid-cols-2 col-span-2 gap-6 border-2 border-[#E9EAEB]">
-                <div id="inspectors">
+            <div
+                class="bg-white rounded-md p-6 grid grid-cols-1 lg:grid-cols-2 col-span-full lg:col-span-2 gap-6 border-2 border-[#E9EAEB]">
+                <div id="inspectors" class="border-b-2 lg:border-none">
                     <h1 class="text-xl">المراقبين:</h1>
                     @forelse ($project->inspectors as $index=>$inspector)
                         <div class="{{ $index % 2 ? 'bg-gray-100 rounded-xl' : '' }} p-3">
@@ -59,13 +60,13 @@
 
             @include('project.project_status',['checklist'=>$project->checklist])
 
-            <div class="bg-white border-2 p-5 col-span-2 relative">
+            <div class="bg-white border-2 p-5 col-span-full relative">
                 @can('create', \App\Models\ProjectChecklist::class)
                     <form id="new_inspection_item" class="flex">
                         @csrf
                         <input type="hidden" name="checklist_id" value="{{ $project->checklist->id }}">
 
-                        <div class="w-1/3">
+                        <div class="w-full">
                             <div class=" relative rounded-md shadow-sm ">
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                     <span class="text-white rounded-full bg-[#FBBC41] sm:text-sm material-icons">
@@ -86,7 +87,7 @@
                     <table class="min-w-full border border-collapse mt-4">
                         <thead>
                             <tr>
-                                <th class="border py-4 w-4">رقم</th>
+                                <th class="border py-4 w-4 hidden">رقم</th>
                                 <th class="border py-4 w-1/2">المعيار</th>
                                 <th class="border py-4 w-16">نعم</th>
                                 <th class="border py-4 w-16">لا</th>
@@ -98,18 +99,19 @@
                         </tbody>
                     </table>
                     @can('create', \App\Models\ProjectChecklist::class)
-                        @if ($project->checklist->status != 'pending' && $project->checklist->items->count() > 0)
-                            <x-jet-button type="submit" class="mt-4 bg-[#705998] tracking-tighter text-lg">
+                        @if ($project->checklist->status == 'pending_1' || explode('_', $project->checklist->status)[0] == 'declined')
+                            <x-jet-button type="submit"
+                                class="mt-4 bg-[#705998] tracking-tighter text-lg w-full md:w-1/2 lg:w-1/3">
                                 حفظ القائمة
                             </x-jet-button>
                         @else
-                            (بانتظار موافقة المشرفين)
+
                         @endif
                     @endcan
                 </form>
                 <div class="flex justify-between py-2 text-lg">
 
-                    @if (auth()->user()->role->id == \App\Models\Role::IS_SUPERVISOR && $project->checklist->status == 'pending')
+                    @if (auth()->user()->role->id == \App\Models\Role::IS_SUPERVISOR && $project->checklist->status == 'pending_2')
 
                         <form action="{{ route('checklist.approve_checklist') }}" method="post">
                             <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
@@ -125,29 +127,47 @@
                                 رفض
                             </x-jet-button>
                         </form>
-                    @else
-                        @switch(explode($project->checklist->status,'_')[0])
-                            @case('approved')
-                                <div class="text-xl text-green-500">
-                                    {{ __($project->checklist->status) }}
-                                </div>
-                            @break
-                            @case('declined')
-                                <div class="text-xl text-red-500">
-                                    {{ __($project->checklist->status) }}
-                                </div>
-                            @break
-                            @default
-                        @endswitch
+                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_PROCURATOR &&
+                        $project->checklist->status == 'pending_3')
+                        <form action="{{ route('checklist.approve_checklist_procurator') }}" method="post">
+                            <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
+                            @csrf
+                            <x-jet-button class="text-md tracking-tight bg-green-500">
+                                موافقة
+                            </x-jet-button>
+                        </form>
+                        <form action="{{ route('checklist.decline_checklist_procurator') }}" method="post">
+                            <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
+                            @csrf
+                            <x-jet-button class="text-md tracking-tight bg-red-500">
+                                رفض
+                            </x-jet-button>
+                        </form>
+                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_ADMIN &&
+                        $project->checklist->status == 'pending_4')
+                        <form action="{{ route('checklist.approve_checklist_admin') }}" method="post">
+                            <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
+                            @csrf
+                            <x-jet-button class="text-md tracking-tight bg-green-500">
+                                موافقة
+                            </x-jet-button>
+                        </form>
+                        <form action="{{ route('checklist.decline_checklist_admin') }}" method="post">
+                            <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
+                            @csrf
+                            <x-jet-button class="text-md tracking-tight bg-red-500">
+                                رفض
+                            </x-jet-button>
+                        </form>
                     @endif
                 </div>
                 @can('create', \App\Models\ProjectChecklist::class)
-                    @if ($project->checklist->status != 'pending' && $project->checklist->items->count() > 0)
+                    @if (($project->checklist->status == 'pending_1' || explode('_', $project->checklist->status)[0] == 'declined') && $project->checklist->items->count() > 0)
                         <form action="{{ route('checklist.request_approval_from_supervisor') }}" method="post">
                             @csrf
                             <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
                             <x-jet-button type="submit"
-                                class="mt-4 bg-[#FBBC41] tracking-tighter text-lg absolute left-4 bottom-4">
+                                class="mt-4 bg-[#FBBC41] tracking-tighter text-lg w-full md:w-1/2 lg:w-1/3">
                                 طلب الموافقة من المشرفين
                             </x-jet-button>
                         </form>

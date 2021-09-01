@@ -46,7 +46,12 @@ class OrganizationProjectController extends Controller
         ]);
 
         $project = OrganizationProject::create($request->all());
-        $checklist = ProjectChecklist::create(['project_id' => $project->id, 'notes' => ' ']);
+        $checklist = ProjectChecklist::create([
+            'project_id' => $project->id,
+            'notes' => ' ',
+            'status' => 'pending_1'
+        ]);
+        toast('تم إنشاء مشروع جديد','info');
         return view('project.step-two', compact('project'));
     }
 

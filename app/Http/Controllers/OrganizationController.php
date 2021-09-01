@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Organization;
 use App\Models\OrganizationProject;
 use App\Models\ProjectAssignment;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Alert;
 
 class OrganizationController extends Controller
 {
@@ -18,7 +20,8 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        //
+        $areas = Area::all();
+        return view('organizations.index', compact('areas'));
     }
 
     /**
@@ -28,7 +31,9 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        //
+
+        $areas = Area::all();
+        return view('organizations.create', compact('areas'));
     }
 
     /**
@@ -39,7 +44,16 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Organization::class);
+        $validator = $request->validate([
+            'area_id' => 'required|numeric|exists:areas,id',
+            'name' => 'required|unique:organizations,name',
+            'address' => 'required',
+            'phone_number' => 'required|unique:organizations,phone_number',
+        ]);
+        Organization::create($request->all());
+        alert()->success('تم إضافة هيئة بنجاح');
+        return redirect()->route('organizations.index');
     }
 
     /**
@@ -151,6 +165,7 @@ class OrganizationController extends Controller
                 'assigned_as' => 'supervisor',
             ]);
         }
+        toast('تم تعيين المشرفين', 'success');
         return view('project.step-three', compact('project'));
     }
     public function assign_inspectors(Request $request)
@@ -165,8 +180,10 @@ class OrganizationController extends Controller
                 ProjectAssignment::create([
                     'user_id' => $user_id,
                     'project_id' => $request->project_id,
+                    'assigned_as' => 'inspector',
                 ]);
             }
+        toast('تم تعيين المفتشين', 'success');
         return redirect()->route('projects.show', $project);
     }
     public function edit_inspectors(int $project_id)

@@ -18,7 +18,7 @@ class CreateOrganizationProjectsTable extends Migration
             $table->id();
             $table->dateTime('deadline')->nullable();
             $table->foreignIdFor(Organization::class, 'org_id')->nullable();
-            $table->boolean('status')->default(false);
+            $table->text('status');
             $table->longText('description')->nullable();
             $table->timestamps();
         });

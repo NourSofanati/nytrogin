@@ -5,19 +5,94 @@ $circleColor = 'bg-gray-200';
 $lineColor = 'border-gray-200';
 $circleIcon = 'alarm';
 $animation = '';
-if ($at == 'inspector') {
-    if ($status == 'draft') {
-        $circleIcon = 'schedule';
-        $circleColor = 'bg-[#FBBC41]';
-        $animation = 'animate-spin';
-    } else {
-        $circleIcon = 'check';
-        $circleColor = 'bg-[#71579A]';
-    }
-} else {
-}
+$words = explode('_', $status);
+//dd($words);
+switch ($words[1]) {
+    case '1':
+        if ($at == 'inspector') {
+            if ($words[0] == 'pending' || $words[0] == 'declined') {
+                $circleIcon = 'schedule';
+                $animation = 'animate-spin';
+                $circleColor = 'bg-[#FBBC41]';
+            } elseif ($words[0] == 'declined') {
+                $circleIcon = 'close';
+                $circleColor = 'bg-red-500';
+            }
+        }
 
+        break;
+    case '2':
+        if ($at == 'supervisor') {
+            if ($words[0] == 'pending') {
+                $circleIcon = 'schedule';
+                $animation = 'animate-spin';
+                $circleColor = 'bg-[#FBBC41]';
+            } elseif ($words[0] == 'declined') {
+                $circleIcon = 'close';
+                $circleColor = 'bg-red-500';
+            }
+        }
+        break;
+    case '3':
+        if ($at == 'procurator') {
+            if ($words[0] == 'pending') {
+                $circleIcon = 'schedule';
+                $animation = 'animate-spin';
+                $circleColor = 'bg-[#FBBC41]';
+            } elseif ($words[0] == 'declined') {
+                $circleIcon = 'close';
+                $circleColor = 'bg-red-500';
+            }
+        }
+        break;
+    case '4':
+        if ($at == 'admin') {
+            if ($words[0] == 'pending') {
+                $circleIcon = 'schedule';
+                $animation = 'animate-spin';
+                $circleColor = 'bg-[#FBBC41]';
+            } elseif ($words[0] == 'declined') {
+                $circleIcon = 'close';
+                $circleColor = 'bg-red-500';
+            }
+        }
+        break;
+}
+switch ($at) {
+    case 'inspector':
+        if ($words[1] > 1) {
+            $circleColor = 'bg-[#71579A]';
+            $circleIcon = 'check';
+        }
+        break;
+    case 'supervisor':
+        if ($words[1] > 2) {
+            $circleColor = 'bg-[#71579A]';
+            $circleIcon = 'check';
+        }
+        break;
+    case 'procurator':
+        if ($words[1] > 3) {
+            $circleColor = 'bg-[#71579A]';
+            $circleIcon = 'check';
+        }
+        break;
+    case 'admin':
+        if ($words[1] > 4) {
+            $circleColor = 'bg-[#71579A]';
+            $circleIcon = 'check';
+        }
+        break;
+}
+if ($words[0] == 'declined') {
+    if ($at == 'inspector') {
+        $circleIcon = 'schedule';
+        $animation = 'animate-spin';
+        $circleColor = 'bg-[#FBBC41]';
+    }
+}
 @endphp
+
 @if ($at != 'admin')
     <div class="h-[50px] border-dashed border-2 w-[1px] {{ $lineColor }} mr-[21px] my-2"></div>
 @endif

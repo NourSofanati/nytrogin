@@ -19,4 +19,8 @@ class Project extends Model
     {
         return $this->belongsTo(Area::class, 'area_id');
     }
+    public function assignments()
+    {
+        return $this->hasMany(ProjectAssignment::class, 'project_id');
+    }
 }

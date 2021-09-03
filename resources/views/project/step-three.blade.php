@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Project inspectors for ') }} {{ $project->organization->name }}
-            {{ $project->organization->id }}
+            {{ __('تعيين مراقبين مشروع') }} {{ $project->name }}
         </h2>
     </x-slot>
 
@@ -14,8 +13,6 @@
                     <div class="h-12 w-12 rounded-full z-0 bg-[#7056A1] flex justify-center">
                         <p class="my-auto text-white font-extrabold">3</p>
                     </div>
-                    {{-- <div class="h-12 w-12 rounded-full bg-[#7056A1]"></div> --}}
-
                 </div>
                 <div class="text-center">
                     <h1 class=" my-5 text-2xl font-semibold">إختر المراقبين</h1>

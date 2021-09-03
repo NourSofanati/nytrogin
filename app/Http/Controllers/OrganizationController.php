@@ -8,6 +8,7 @@ use App\Models\OrganizationProject;
 use App\Models\ProjectAssignment;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Alert;
 
@@ -137,11 +138,11 @@ class OrganizationController extends Controller
         $inspectors = User::where('role_id', Role::IS_INSPECTOR)->get();
         $html = '';
 
-        $organizationProject = OrganizationProject::find($request->project_id);
+        $project = Project::find($request->project_id);
         foreach ($inspectors as $index => $inspector) {
             $s_id = $inspector["id"];
             $s_name = $inspector["name"];
-            $checked = $organizationProject->assignments->where('user_id', $inspector->id)->count() > 0 ? 'checked' : '';
+            $checked = $project->assignments->where('user_id', $inspector->id)->count() > 0 ? 'checked' : '';
             $isEven = $index % 2 ? 'bg-gray-100' : '';
             if ($inspector)
                 $html .= "
@@ -157,7 +158,7 @@ class OrganizationController extends Controller
 
     public function assign_supervisors(Request $request)
     {
-        $project = OrganizationProject::find($request->project_id);
+        $project = Project::find($request->project_id);
         foreach ($request->supervisor as $user_id => $value) {
             ProjectAssignment::create([
                 'user_id' => $user_id,
@@ -166,11 +167,11 @@ class OrganizationController extends Controller
             ]);
         }
         toast('تم تعيين المشرفين', 'success');
-        return view('project.step-three', compact('project'));
+        return redirect()->route('project.assign_inspectors', compact('project'));
     }
     public function assign_inspectors(Request $request)
     {
-        $project = OrganizationProject::find($request->project_id);
+        $project = Project::find($request->project_id);
         foreach ($project->assignments as $assignment) {
             if ($assignment->assigned_as === 'inspector')
                 $assignment->delete();
@@ -186,9 +187,9 @@ class OrganizationController extends Controller
         toast('تم تعيين المفتشين', 'success');
         return redirect()->route('projects.show', $project);
     }
-    public function edit_inspectors(int $project_id)
+    public function edit_inspectors(Request $request)
     {
-        $project = OrganizationProject::find($project_id);
+        $project = Project::find($request->project_id);
         return view('project.step-three', compact('project'));
     }
 }

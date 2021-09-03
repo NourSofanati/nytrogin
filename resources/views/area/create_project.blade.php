@@ -5,7 +5,7 @@
     <div class="py-12 px-6">
         <div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <form action="" class="text-xl text-[#673B8C]">
+                <form action="{{ route('projects.store') }}" class="text-xl text-[#673B8C]" method="POST">
                     @csrf
                     <div class="bg-[#E5E6E7] px-4 py-3 mt-3 rounded-3xl ">
 

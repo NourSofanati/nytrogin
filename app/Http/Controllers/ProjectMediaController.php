@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\ProjectMedia;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class ProjectMediaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,6 +24,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -34,29 +35,27 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Project::create($request->all());
-        toast('تم إنشاء مشروع جديد', 'info');
-        return redirect()->route('project.assign_supervisors', compact('project'));
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\ProjectMedia  $projectMedia
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(ProjectMedia $projectMedia)
     {
-        return view('project.show', compact('project'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\ProjectMedia  $projectMedia
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit(ProjectMedia $projectMedia)
     {
         //
     }
@@ -65,10 +64,10 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\ProjectMedia  $projectMedia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, ProjectMedia $projectMedia)
     {
         //
     }
@@ -76,22 +75,11 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\ProjectMedia  $projectMedia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(ProjectMedia $projectMedia)
     {
         //
-    }
-    public function assign_supervisors(Request $request)
-    {
-        $project = Project::find($request->project);
-        return view('project.step-two', compact('project'));
-    }
-
-    public function assign_inspectors(Request $request)
-    {
-        $project = Project::find($request->project);
-        return view('project.step-three', compact('project'));
     }
 }

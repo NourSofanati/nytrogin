@@ -242,7 +242,7 @@
             setInterval(() => {
                 get_notifications();
 
-            }, 1000);
+            }, 2500);
         </script>
     @endsection
 </nav>

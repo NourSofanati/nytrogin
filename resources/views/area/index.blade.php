@@ -11,7 +11,8 @@
                     @foreach ($areas as $area)
                         <div class=" my-4 font-bold  text-gray-700 flex gap-4">
                             <form action="{{ route('area.destroy', $area) }}"
-                                onsubmit="return confirm('هل انت متأكد من حذف هذه المنطقة؟ ({{ $area->name }}) سيؤدي حذف هذه المنطقة لحذف المشاريع المندرجة تحته');" method="post">
+                                onsubmit="return confirm('هل انت متأكد من حذف هذه المنطقة؟ ({{ $area->name }}) سيؤدي حذف هذه المنطقة لحذف المشاريع المندرجة تحته');"
+                                method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit">

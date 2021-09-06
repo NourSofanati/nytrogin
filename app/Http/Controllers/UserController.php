@@ -29,4 +29,23 @@ class UserController extends Controller
         ]);
         return redirect()->route('users.index');
     }
+
+    public function edit(User $user)
+    {
+        return view('users.show', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $user->update($request->all());
+        $user->save();
+        toast('تم حفظ المستخدم', 'success');
+        return redirect()->back();
+    }
+    public function destroy(User $user)
+    {
+        $user->delete();
+        toast('تم حذف المستخدم ' . $user->name, 'danger');
+        return redirect()->route('users.index');
+    }
 }

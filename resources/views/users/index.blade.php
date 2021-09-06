@@ -13,7 +13,9 @@
                         {{ __($role->name) }}
                     </h1>
                     @foreach ($role->users as $user)
-                        <li>{{ $user->name }}</li>
+                        <a href="{{ route('users.edit', $user) }}">
+                            <li>{{ $user->name }}</li>
+                        </a>
                     @endforeach
                 </div>
             @endforeach

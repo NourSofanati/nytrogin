@@ -76,7 +76,6 @@
         let progress = null;
         $('#search').on('propertychange input', function(e) {
             var valueChanged = false;
-
             if (e.type == 'propertychange') {
                 valueChanged = e.originalEvent.propertyName == 'value';
             } else {

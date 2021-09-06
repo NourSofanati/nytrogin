@@ -7,6 +7,7 @@
             <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8">
                 <div class="text-2xl text-white font-bold bg-[#673B8C] col-span-full py-12 text-center  rounded-[50px]">
                     {{ $area->name }}
+
                 </div>
                 @foreach ($categories as $cat)
                     <form action="{{ route('show_projects') }}" method="post">

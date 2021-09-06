@@ -34,13 +34,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Area::create([
-            'name' => 'المنطقة الشمالية و الشرقية',
+            'name' => 'المنطقة الشرقية',
         ]);
         Area::create([
             'name' => 'المنطقة الوسطى',
         ]);
         Area::create([
-            'name' => 'المنطقة الغربية والجنوبية',
+            'name' => 'المنطقة الغربية',
         ]);
 
         User::create([

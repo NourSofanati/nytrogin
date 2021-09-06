@@ -167,7 +167,7 @@ class OrganizationController extends Controller
             ]);
         }
         toast('تم تعيين المشرفين', 'success');
-        return redirect()->route('project.assign_inspectors', compact('project'));
+        return redirect()->route('project.assign_inspectors', ['project_id' => $project->id]);
     }
     public function assign_inspectors(Request $request)
     {

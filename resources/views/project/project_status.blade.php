@@ -1,4 +1,5 @@
-<div id="status" class="bg-white  rounded-md p-6 grid grid-cols-1 gap-6 border-2 col-span-full border-[#E9EAEB] place-items-center">
+<div id="status"
+    class="bg-white  rounded-md p-6 grid grid-cols-1 gap-6 border-2 col-span-full border-[#E9EAEB] place-items-center">
     <h1 class="text-2xl">
         حالة المشروع:
     </h1>
@@ -26,9 +27,9 @@
             </p>
         </div> --}}
 
-        @include('project.level_status',['at'=>'admin','status' => $project->checklist->status])
-        @include('project.level_status',['at'=>'procurator','status' => $project->checklist->status])
-        @include('project.level_status',['at'=>'supervisor','status' => $project->checklist->status])
-        @include('project.level_status',['at'=>'inspector','status' => $project->checklist->status])
+        @include('project.level_status',['at'=>'admin','status' => $project->status])
+        @include('project.level_status',['at'=>'procurator','status' => $project->status])
+        @include('project.level_status',['at'=>'supervisor','status' => $project->status])
+        @include('project.level_status',['at'=>'inspector','status' => $project->status])
     </div>
 </div>

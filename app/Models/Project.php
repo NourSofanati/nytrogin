@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'description', 'cat_id', 'area_id'
+        'name', 'description', 'cat_id', 'area_id', 'comments', 'status'
     ];
     public function category()
     {
@@ -22,5 +22,17 @@ class Project extends Model
     public function assignments()
     {
         return $this->hasMany(ProjectAssignment::class, 'project_id');
+    }
+    public function supervisors()
+    {
+        return $this->hasMany(ProjectAssignment::class, 'project_id')->where('assigned_as', 'supervisor');
+    }
+    public function inspectors()
+    {
+        return $this->hasMany(ProjectAssignment::class, 'project_id')->where('assigned_as', 'inspector');
+    }
+    public function media()
+    {
+        return $this->hasMany(ProjectMedia::class, 'project_id');
     }
 }

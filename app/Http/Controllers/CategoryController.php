@@ -41,34 +41,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Shows the projects in an area
-     *
-     * @return \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function show_projects(Request $request)
-    {
-        $area = Area::find($request->area_id);
-        $cat = Category::find($request->cat_id);
-        $projects = Project::where('area_id', $area->id)->where('cat_id', $cat->id)->get();
-        return view('area.projects', compact('area', 'cat', 'projects'));
-    }
-
-    /**
-     * Shows the project creation page.
-     *
-     * @return \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create_project(Request $request)
-    {
-        $area = Area::find($request->area_id);
-        $cat = Category::find($request->cat_id);
-        return view('area.create_project', compact('area', 'cat'));
-    }
-
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Category  $category

@@ -5,13 +5,15 @@
         <img src="{{ asset('images/logos.png') }}" alt="" srcset="">
     </div>
 
-    <div class="flex w-full justify-between px-4 py-4">
-        <div class="text-white bg-[#72559D] h-10 w-10 grid place-content-center place-items-center rounded-full">
+    <div class="flex w-full px-4 py-4">
+        <div
+            class="text-white bg-[#72559D] h-10 w-10 place-content-center place-items-center rounded-full grid md:hidden">
             <span class="material-icons" id="hide_sidebar">
                 menu_open
             </span>
         </div>
-        <div class="text-gray-400 h-10 w-10 grid place-content-center place-items-center relative">
+        <div
+            class="text-gray-400 h-10 w-10 grid place-content-center place-items-center relative justify-self-end self-end mr-auto">
             <span
                 class="animate-ping absolute inline-flex h-3 w-3 top-1 right-1 rounded-full bg-purple-400 opacity-75 notif-ping hidden"></span>
             <span class="absolute inline-flex rounded-full h-3 w-3 top-1 right-1 bg-purple-500 notif-ping hidden"></span>
@@ -36,7 +38,11 @@
         </div>
 
         <div class="text-2xl font-bold text-[#71579A] mt-5">{{ auth()->user()->name }} </div>
-        <span class="text-gray-400 text-xl capitalize font-normal mb-6">{{ __(auth()->user()->role->name) }}</span>
+        <span class="text-gray-500 text-xl capitalize font-bold ">{{ __(auth()->user()->role->name) }}</span>
+        @if (auth()->user()->role_id == \App\Models\Role::IS_INSPECTOR)
+            <span
+                class="text-gray-400 text-xl capitalize font-normal mb-6">({{ __(auth()->user()->specialization) }})</span>
+        @endif
     </div>
     <div class="___class_+?15___">
         <div class="flex flex-col">
@@ -70,6 +76,16 @@
                     {{ __('المناطق') }}
                 </x-jet-nav-link>
             @endcan
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="inline-flex items-center py-6 px-10 text-lg font-bold leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
+                    <span class="material-icons ml-6">
+                        logout
+                    </span>
+                    {{ __('تسجيل الخروج') }}
+                </button>
+            </form>
         </div>
     </div>
 
@@ -83,9 +99,10 @@
                 isShown = !isShown;
                 $('#notifications').html('');
 
-                if (isShown)
+                if (isShown) {
                     $('#notifications').fadeIn();
-                else
+                    get_notifications();
+                } else
                     $('#notifications').fadeOut();
             });
 
@@ -133,14 +150,16 @@
                                     console.log('read notification successfuly');
                                 }
                             });
+
                         });
                     }
                 });
             }
+            get_notifications();
             setInterval(() => {
                 get_notifications();
 
-            }, 2500);
+            }, 500);
         </script>
     @endsection
 </nav>

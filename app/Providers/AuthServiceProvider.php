@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Models\OrganizationProject;
 use App\Models\ProjectAssignment;
 use App\Models\ProjectChecklist;
+use App\Models\ProjectInspection;
 use App\Models\Team;
 use App\Models\User;
 use App\Policies\ChecklistPolicy;
+use App\Policies\InspectionPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\TeamPolicy;
 
@@ -25,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         OrganizationProject::class => ProjectPolicy::class,
         ProjectChecklist::class => ChecklistPolicy::class,
+        ProjectInspection::class => InspectionPolicy::class,
+
     ];
 
     /**

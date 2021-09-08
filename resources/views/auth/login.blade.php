@@ -74,7 +74,7 @@
                 <button class="w-full bg-[#FCB637] text-center text-2xl tracking-tight py-2 rounded-2xl">
                     {{ __('Log in') }}
                 </button>
-                <p class="mt-2"> جميع الحقوق محفوظة لـ نيتروجين © 2020 </p>
+                <p class="mt-2"> {{ __('copyrights') }} </p>
             </div>
         </form>
     </div>

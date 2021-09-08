@@ -33,5 +33,8 @@
     "Profile": "حسابك",
     "Select A New Photo": "اختر صورة جديدة",
     "Create a new user": "إنشاء حساب مستخدم جديد",
-    "Create an area": "إضافة منطقة"
+    "Create an area": "إضافة منطقة",
+    "copyrights": "جميع الحقوق محفوظة لـ نيتروجين © 2021",
+    "Whoops! Something went wrong.": "حدث خطأ ما",
+    "These credentials do not match our records.": "هذه المعلومات لا تتطابق مع سجلاتنا, تأكد من البريد الإلكتروني وكلمة المرور"
 }

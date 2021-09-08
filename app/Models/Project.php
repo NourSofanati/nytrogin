@@ -9,15 +9,11 @@ class Project extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'description', 'cat_id', 'area_id', 'comments', 'status'
+        'name', 'description', 'city_id', 'comments', 'status'
     ];
-    public function category()
+    public function city()
     {
-        return $this->belongsTo(Category::class, 'cat_id');
-    }
-    public function area()
-    {
-        return $this->belongsTo(Area::class, 'area_id');
+        return $this->belongsTo(City::class, 'city_id');
     }
     public function assignments()
     {
@@ -34,5 +30,9 @@ class Project extends Model
     public function media()
     {
         return $this->hasMany(ProjectMedia::class, 'project_id');
+    }
+    public function inspections()
+    {
+        return $this->hasMany(ProjectInspection::class,'project_id');
     }
 }

@@ -3,18 +3,23 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckItemController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InspectionApprovalController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrganizationProjectController;
 use App\Http\Controllers\ProjectChecklistController;
 use App\Http\Controllers\ProjectCommentsController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectInspectionController;
 use App\Http\Controllers\UserController;
+use App\Models\InspectionMedia;
 use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\ProjectComments;
+use App\Models\ProjectInspection;
 use App\Models\ProjectMedia;
 use Illuminate\Support\Facades\Validator;
 
@@ -38,8 +43,11 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::post('category/projects', [CategoryController::class, 'show_projects'])->name('show_projects');
-    Route::post('category/create_project', [CategoryController::class, 'create_project'])->name('create_project');
+    Route::resource('inspection', ProjectInspectionController::class);
+    Route::resource('approvals', InspectionApprovalController::class);
+    Route::post('create_inspection_report', [ProjectInspectionController::class, 'create_inspection_report'])->name('create_inspection_report');
+    Route::post('city/create_project', [CityController::class, 'create_project'])->name('create_project');
+    Route::post('city/projects', [CityController::class, 'show_projects'])->name('show_projects');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('organizations/get_by_id', [OrganizationController::class, 'get_by_id'])->name('organizations.get_by_id');
     Route::get('organizations/get_all_supervisors', [OrganizationController::class, 'get_all_supervisors'])->name('organizations.get_all_supervisors');
@@ -64,6 +72,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('organizations', OrganizationController::class);
     Route::resource('area', AreaController::class);
     Route::resource('category', CategoryController::class);
+    Route::resource('cities', CityController::class);
+    Route::get('create_from_area', [CityController::class, 'create_from_area'])->name('create_from_area');
     Route::post('add-comment', function (Request $request) {
         $project = Project::find($request->project_id);
         $project->comments = $request->comments;
@@ -119,11 +129,10 @@ Route::post('upload_file', function (Request $request) {
 
             // File path
             $filepath = url('files/' . $filename);
-
-
-            ProjectMedia::create([
+            InspectionMedia::create([
                 'user_id' => auth()->user()->id,
-                'project_id' => $request->project_id,
+                'inspection_id' => $request->inspection_id,
+                'mimeType' => $file->getClientMimeType(),
                 'url' => $filepath,
                 'filename' => $filename
             ]);

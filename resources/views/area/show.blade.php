@@ -9,14 +9,14 @@
                     {{ $area->name }}
 
                 </div>
-                @foreach ($categories as $cat)
+                @foreach ($area->cities as $city)
                     <form action="{{ route('show_projects') }}" method="post">
                         @csrf
                         <input type="hidden" name="area_id" value="{{ $area->id }}">
-                        <input type="hidden" name="cat_id" value="{{ $cat->id }}">
+                        <input type="hidden" name="city_id" value="{{ $city->id }}">
                         <button type="submit"
                             class="bg-[#E5E6E7] py-12 px-4 text-center font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px] w-full">
-                            {{ $cat->name }}</button>
+                            {{ $city->name }}</button>
                     </form>
                 @endforeach
             </div>

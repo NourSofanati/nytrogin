@@ -14,9 +14,9 @@
                         <input type="hidden" name="area_id" value="{{ $area->id }}">
                     </div>
                     <div class="bg-[#E5E6E7] px-4 py-2 mt-3 rounded-3xl">
-                        <p class="w-full grid grid-cols-2"><span class="font-bold ">نوع المشروع:
-                            </span>{{ $cat->name }}</p>
-                        <input type="hidden" name="cat_id" value="{{ $cat->id }}">
+                        <p class="w-full grid grid-cols-2"><span class="font-bold ">المدينة:
+                            </span>{{ $city->name }}</p>
+                        <input type="hidden" name="city_id" value="{{ $city->id }}">
                     </div>
                     <div class="bg-[#E5E6E7] mt-3 rounded-3xl">
                         <input type="text" name="name" id="name" required

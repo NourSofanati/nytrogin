@@ -25,7 +25,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role_id,
+            'role_id' => $request->role_id,
         ]);
         return redirect()->route('users.index');
     }

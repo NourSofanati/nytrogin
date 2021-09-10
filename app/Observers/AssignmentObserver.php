@@ -17,7 +17,7 @@ class AssignmentObserver
     {
         Notification::create([
             'user_id' => $projectAssignment->user_id,
-            'body' => "You have been assigned to a new project (" . $projectAssignment->project->name . ")",
+            'body' => "تم تعيينك لمشروع (" . $projectAssignment->project->name . ")",
             'link' => route('projects.show', $projectAssignment->project->id),
         ]);
     }

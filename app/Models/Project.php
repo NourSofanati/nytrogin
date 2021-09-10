@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'description', 'city_id', 'comments', 'status'
+        'name', 'description', 'city_id', 'comments', 'status', 'deadline'
     ];
     public function city()
     {
@@ -33,6 +33,6 @@ class Project extends Model
     }
     public function inspections()
     {
-        return $this->hasMany(ProjectInspection::class,'project_id');
+        return $this->hasMany(ProjectInspection::class, 'project_id');
     }
 }

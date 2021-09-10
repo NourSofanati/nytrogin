@@ -27,8 +27,11 @@
                                 </div>
                             </div>
                         </div>
-                        <x-jet-button id="submitBtn" class="hidden mx-auto">
+                        <x-jet-button id="submitBtn" class="hidden mx-auto text-lg">
                             تعيين المراقبين
+                        </x-jet-button>
+                        <x-jet-button id="pass" class="hidden mx-auto mt-5 text-lg">
+                            تمرير أختيار المراقبين من قبل المشرف
                         </x-jet-button>
                     </form>
                 </div>
@@ -43,6 +46,7 @@
                 success: function(data) {
                     $('#inspectors').html(data.html).fadeIn();
                     $('#submitBtn').toggle('hidden');
+                    $('#pass').toggle('hidden');
                 }
             });
         </script>

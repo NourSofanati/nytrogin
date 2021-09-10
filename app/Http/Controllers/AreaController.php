@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Category;
-use App\Models\Project;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -51,8 +49,7 @@ class AreaController extends Controller
      */
     public function show(Area $area)
     {
-        $categories = Category::all();
-        return view('area.show', compact('area', 'categories'));
+        return view('area.show', compact('area'));
     }
 
     /**

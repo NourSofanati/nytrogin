@@ -3,19 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Organization;
-use App\Models\OrganizationProject;
-use App\Models\Role;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Project;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // $organizations = Organization::paginate(5);
         $areas = Area::all();
-        return view('dashboard', compact('areas'));
+        $projects = Project::all();
+        $completedProjects = $projects->where('status', 'done_5')->count();
+        $inProgressProjects = Project::whereHas('inspections')->count();
+        $newProjects = Project::doesntHave('inspections')->count();
+
+        return view('dashboard', compact('areas', 'completedProjects', 'inProgressProjects','newProjects'));
     }
 }

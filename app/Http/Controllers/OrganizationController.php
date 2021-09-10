@@ -127,7 +127,7 @@ class OrganizationController extends Controller
             $html .= "
             <div class=\"flex text-xl justify-between gap-2 w-full $isEven py-2 px-4\">
                 <label class=\"block\" for=\"supervisor[$s_id]\">$s_name</label>
-                <input type=\"checkbox\" name=\"supervisor[$s_id]\" id=\"supervisor[$s_id]\" class=\"block mr-3 my-auto \">
+                <input type=\"checkbox\" name=\"supervisor[$s_id]\" id=\"supervisor[$s_id]\" class=\"block mr-3 my-auto \" required>
             </div>";
         }
 

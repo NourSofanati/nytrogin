@@ -23,10 +23,16 @@
                             class="border-none px-4 py-2  focus:outline-none active:border-none w-full h-full bg-transparent "
                             placeholder="اسم المشروع">
                     </div>
-                    <div class="bg-[#E5E6E7] mt-3 rounded-3xl">
+                    <div class="bg-[#E5E6E7] mt-3  rounded-3xl">
                         <textarea name="description" id="description" cols="30" rows="10"
                             class="border-none px-4 py-2  focus:outline-none active:border-none w-full h-full bg-transparent "
                             placeholder="وصف المشروع"></textarea>
+                    </div>
+                    <div class="px-4 py-3 bg-[#E5E6E7] rounded-3xl mt-3">
+                        <label for="deadline" class="block mb-3">
+                            تاريخ تسليم المشروع
+                        </label>
+                        <input type="date" name="deadline" required>
                     </div>
                     <button type="submit" class="text-white bg-[#673B8C] mt-5 shadow-xl py-2 px-4 font-bold rounded-xl">
                         إنشاء مشروع جديد

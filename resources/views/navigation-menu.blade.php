@@ -39,9 +39,10 @@
 
         <div class="text-2xl font-bold text-[#71579A] mt-5">{{ auth()->user()->name }} </div>
         <span class="text-gray-500 text-xl capitalize font-bold ">{{ __(auth()->user()->role->name) }}</span>
-        @if (auth()->user()->role_id == \App\Models\Role::IS_INSPECTOR)
-            <span
-                class="text-gray-400 text-xl capitalize font-normal mb-6">({{ __(auth()->user()->specialization) }})</span>
+        @if (auth()->user()->role_id == \App\Models\Role::IS_INSPECTOR && auth()->user()->specialization)
+            <span class="text-gray-400 text-xl capitalize font-normal mb-6">
+                ({{ __(auth()->user()->specialization) }})
+            </span>
         @endif
     </div>
     <div class="___class_+?15___">

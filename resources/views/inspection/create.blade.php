@@ -5,51 +5,167 @@
         </h2>
     </x-slot>
 
-    <div class="p-12">
-        <div class="bg-white border-2 rounded-xl p-5">
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <form action="{{ route('inspection.store') }}" method="post" autocomplete="off"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <h1 class="text-xl font-bold text-[#673B8C]">
-                        {{ $project->name }}
-                    </h1>
-                    <label for="type_id" class="mt-5 block">نوع الملاحظة / المشكلة</label>
-                    <select name="type_id" id="type_id" class="block border border-gray-400 bg-gray-100 rounded w-full">
-                        @foreach (\App\Models\InspectionType::all() as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                        @endforeach
-                    </select>
-
-                    <input type="hidden" name="project_id" required value="{{ $project->id }}" />
-                    <input type="hidden" name="user_id" required value="{{ auth()->user()->id }}" />
-
-                    <label for="comments" class="mt-5 block">الملاحظات</label>
-                    <textarea name="comments" id="comments" cols="30" rows="10"
-                        class="block border-gray-400 bg-gray-100 w-full"></textarea>
-                    @csrf
-                    {{-- <label class="font-extrabold mt-10 text-[#673B8C] text-xl block" for="file">إضافة مرفقات</label>
-                    <button
-                        class="bg-[#e5e6e7] text-[#673B8C] flex flex-col  items-center justify-center p-8 rounded-3xl border border-gray-400 my-4"
-                        id="upload_files">
-                        <span class="material-icons md-48">
-                            add
-                        </span>
-                    </button>
-                    <input id="file" type="file" name="files[]" class="hidden" accept="image/*, video/*"
-                        multiple />
-                    <div class="flex gap-4" id="preview">
-
-                    </div> --}}
-                    <button type="submit"
-                        class="bg-[#FCB634] px-4 py-2 rounded block text-[#673B8C] border-[#673B8C] border font-bold mt-5">{{ __('Save') }}
-                    </button>
-                </form>
-            </div>
+    <div class="xl:p-12 xl:p-8 p-4">
+        <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
+            التفتيش على الفعاليات الترفيهية
         </div>
+        <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
+            @csrf
+            {{-- 'user_id', 'project_id', 'license_id', 'report_date', 'report_time', 'licence_expiration', 'commercial_license_id' --}}
+            <div class="mt-3 border-2 bg-white rounded-xl py-4 px-2 text-lg">
+                <div class=" flex flex-col gap-4 w-full xl:w-1/2">
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="user_name">{{ __('Inspector Name') }}</label>
+                        <input type="hidden" name="user_id" id="user_id" value="{{ auth()->id() }}" />
+                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                            name="user_name" id="user_name" value="{{ auth()->user()->name }}" disabled />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="project_name">{{ __('Project Name') }}</label>
+                        <input type="hidden" name="project_id" id="project_id" value="{{ $project->id }}" />
+                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                            name="project_name" id="project_name" value="{{ $project->name }}" disabled />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="city_name">{{ __('City / State') }}</label>
+                        <input type="hidden" name="city_id" id="city_id" value="{{ $project->city->id }}" />
+                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                            name="city_name" id="city_name"
+                            value="{{ $project->city->name . ' / ' . $project->city->area->name }}" disabled />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="report_date">{{ __('Inspection Date') }}</label>
+                        <input type="date" name="report_date" id="report_date" required
+                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="report_time">{{ __('Inspection Time') }}</label>
+                        <input type="time" name="report_time" id="report_time" required
+                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto" for="license_id">{{ __('Permit ID') }}</label>
+                        <input type="text" name="license_id" id="license_id"
+                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto"
+                            for="license_expiration">{{ __('Permit Expiration Date') }}</label>
+                        <input type="date" name="license_expiration" id="license_expiration"
+                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                    </div>
+                    <div class="grid grid-cols-4">
+                        <label class="my-auto"
+                            for="commercial_license_id">{{ __('Commercial license ID') }}</label>
+                        <input type="text" name="commercial_license_id" id="commercial_license_id"
+                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 border-2 bg-white rounded-xl p-8 text-lg ">
+
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="border border-collapse ">
+                            <th class="border hidden xl:table-cell border-collapse py-2 w-7/12">قائمة التفتيش</th>
+                            <th class="border hidden xl:table-cell border-collapse py-2 w-1/12">نعم/لا</th>
+                            <th class="border hidden xl:table-cell border-collapse py-2">ملاحظات</th>
+                            <th class="border hidden xl:table-cell border-collapse py-2 w-1/12">المرفقات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checkItemLines">
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <button
+                                    class="w-full h-full py-2 bg-gray-50 hover:bg-indigo-50 transition-all duration-100 text-gray-700 text-xl flex justify-center"
+                                    id="addNewCheckItem">
+                                    <span class="my-auto">{{ __('Add new line') }}</span>
+                                    <span class="material-icons my-auto">add</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="mt-3 rounded-xl p-8 text-lg">
+                <button type="submit" class="bg-green-500 text-xl rounded py-4 px-4 text-white w-full">حفظ</button>
+            </div>
+        </form>
     </div>
+
+
+
     @push('custom-scripts')
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script>
+            //import Swal from 'sweetalert2'
+            let index = 0;
+            let defaultCheckItems = `هل المنشأة تحمل تصريح ساري المفعول من الهيئة العامة للترفيه  ,
+هل تم الالتزام بالسماح للمفتشين بالدخول لموقع النشاط وتسهيل أدائهم لمهامهم,
+هل تم الالتزام بإيقاف الموسيقى والعروض قبل الاذان ب15 دقيقه وحتى 45 دقيقة بعد الأذان,
+هل تم الالتزام بعدم خروج الصوت خارج حدود مقر النشاط,
+هل تم توفير بطاقات تعريفية للعاملين، وسترات مميزة تبين مهامهم.,
+هل تم التعاقد مع شركات الحراسات الأمنية المرخصة لحفظ الأمن والسلامة وتوفير الحراسة من الجنسين حسب فئة الزوار المستهدفة ,
+هل تم عرض خريطة تفصيلية للموقع بشكل واضح للزوار ولوحات إرشادية داخل وخارج الموقع,
+هل تم الالتزام بالمظهر اللائق والسلوك الاحترافي.,
+هل تم الالتزام ببيع التذاكر من خلال مزود خدمة معتمد من قبل الهيئة,
+هل تم الالتزام بتعيين مسؤول متواجد طوال فترة الفعالية,
+هل تم الالتزام بتوفير كاميرات مراقبة في الفعالية`;
+
+            // protected $fillable = ['checklist_id', 'check', 'notes', 'inspection'];
+
+            defaultCheckItems.split(',').forEach(function(item) {
+                let chechItemRowHtml = ` <tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <textarea name="row[${index}][inspection]" id=""
+                                        class="border-none w-full h-full" rows="3">${item}</textarea>
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0">
+                                        <option value="YES">{{ __('Yes') }}</option>
+                                        <option value="NO">{{ __('No') }}</option>
+                                        <option value="N\\A">{{ __('N\\A') }}</option>
+                                    </select>
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
+                                    <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
+
+                                </td>
+                            </tr>`;
+                $('#checkItemLines').append(chechItemRowHtml);
+            })
+
+            $('#addNewCheckItem').click(function(e) {
+                e.preventDefault();
+                let chechItemRowHtml = `<tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <textarea name="row[${index}][inspection]" id=""
+                                        class="border-none w-full h-full" rows="3" required></textarea>
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0" required>
+                                        <option value="YES">{{ __('Yes') }}</option>
+                                        <option value="NO">{{ __('No') }}</option>
+                                        <option value="NA">{{ __('N\\A') }}</option>
+                                    </select>
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
+                                </td>
+                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
+                                    <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
+
+                                </td>
+                            </tr>`;
+                $('#checkItemLines').append(chechItemRowHtml);
+            });
             $('#upload_files').on('click', function(event) {
                 event.preventDefault();
                 $('#file').trigger('click')
@@ -70,6 +186,42 @@
                         $('#preview').append(previewHtml);
                     }
                 });
+            });
+            $('#addNewTypeForm').submit(function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('types.store') }}",
+                    data: formData,
+
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#addNewTypeModal').addClass('hidden');
+                        Swal.fire({
+                            'title': 'تم إضافة نوع ملاحظة / مشكلة',
+                            'icon': 'success'
+                        });
+                        let options = ``;
+                        console.log(response.types);
+                        response.types.forEach(type => {
+                            options +=
+                                `<option value="${type.id}" ${type.name == e.target.name.value? 'selected' : ''}>${type.name}</option>`;
+                        });
+                        console.log(options);
+                        $('#type_id').html(options);
+                    }
+                });
+            });
+            $('#exit_button').click(function(e) {
+                e.preventDefault();
+                $('#addNewTypeModal').addClass('hidden');
+            });
+            $('#addNewType').click(function(e) {
+                e.preventDefault();
+                $('#addNewTypeModal').removeClass('hidden');
             });
         </script>
     @endpush

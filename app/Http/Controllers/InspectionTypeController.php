@@ -35,7 +35,9 @@ class InspectionTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        InspectionType::create($request->all());
+        $types = InspectionType::all();
+        return response()->json(['types' => $types]);
     }
 
     /**

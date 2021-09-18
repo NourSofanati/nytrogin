@@ -94,15 +94,15 @@ if ($words[0] == 'declined') {
 @endphp
 
 @if ($at != 'admin')
-    <div class="h-[50px] border-dashed border-2 w-[1px] {{ $lineColor }} mr-[21px] my-2"></div>
+    <div class="h-[2px] w-[50px] border-dashed border-2  {{ $lineColor }}  mt-6"></div>
 @endif
-<div class="flex">
+<div class="flex flex-col text-center  items-center">
     <div class="{{ $circleColor }} h-12 w-12 rounded-full grid place-items-center place-content-center text-white">
         <span class="material-icons {{ $animation }}">
             {{ $circleIcon }}
         </span>
     </div>
-    <p class="my-auto font-bold mr-5">
+    <p class="my-auto font-bold ">
         {{ __($at . 's') }}
     </p>
 </div>

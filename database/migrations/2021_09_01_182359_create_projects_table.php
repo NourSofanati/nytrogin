@@ -18,7 +18,7 @@ class CreateProjectsTable extends Migration
             $table->text('name');
             $table->foreignIdFor(City::class, 'city_id');
             $table->text('description')->nullable();
-            $table->date('deadline');
+            $table->dateTime('deadline');
             $table->timestamps();
         });
     }

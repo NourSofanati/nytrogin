@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'specialization'
+        'name', 'email', 'password', 'role_id', 'specialization', 'phone_number', 'area_id'
     ];
 
     /**
@@ -74,5 +74,13 @@ class User extends Authenticatable
     public function assigned_to(OrganizationProject $project)
     {
         return $this->assignments()->where('project_id', $project->id)->count() > 0;
+    }
+    public function projects()
+    {
+        if ($this->role_id == Role::IS_PROJECT_MANAGER)
+            return $this->hasMany(Project::class, 'pm_id');
+        elseif ($this->role_id == Role::IS_DEPUTY_PROJECT_MANAGER)
+            return $this->hasMany(Project::class, 'dpm_id');
+        else return null;
     }
 }

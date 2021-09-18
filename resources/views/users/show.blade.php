@@ -32,6 +32,34 @@
                     <input class="block border border-gray-400 bg-gray-100 rounded w-full"
                         placeholder="{{ __('Email') }}" type="email" name="email" id="email" autocomplete="off"
                         value="{{ $user->email }}" />
+                    <label for="area_id" class="mt-5 block">{{ __('المنطقة') }}</label>
+                    {{-- <input class="block border border-gray-400 bg-gray-100 rounded w-full"
+                        placeholder="{{ __('Email') }}" type="email" name="email" id="email" autocomplete="off"
+                        value="{{ $user->email }}" /> --}}
+
+                    <select name="area_id" id="area_id" class="block border border-gray-400 bg-gray-100 rounded w-full">
+                        <option>---</option>
+                        @foreach (\App\Models\Area::all() as $area)
+                            <option value="{{ $area->id }}" {{ $user->area_id == $area->id ? 'selected' : '' }}>
+                                {{ $area->name }}</option>
+                        @endforeach
+                    </select>
+
+
+                    <label for="phone_number" class="mt-5 block">{{ __('رقم الهاتف') }}</label>
+                    <div class="relative">
+                        <div class="absolute top-0 bottom-0 left-0 flex">
+                            <span dir="ltr" class="my-auto pl-2 pr-1 border-r-2 border-gray-300">
+                                +966
+                            </span>
+                        </div>
+                        <bdi>
+                            <input type="tel" name="phone_number" pattern="[0-9]{9}"
+                                class="block border border-gray-400 bg-gray-100 rounded w-full pl-14"
+                                placeholder="500011234" value="{{ $user->phone_number }}" />
+                        </bdi>
+                    </div>
+
 
 
                     <label for="name" class="mt-5 block">{{ __('Role') }}</label>
@@ -46,7 +74,8 @@
                         <label for="specialization" class="mt-5 block">
                             {{ __('الوظيفة') }}</label>
                         <input type="text" name="specialization" id="specialization"
-                            class="block border border-gray-400 bg-gray-100 rounded w-full" value="{{$user->specialization}}">
+                            class="block border border-gray-400 bg-gray-100 rounded w-full"
+                            value="{{ $user->specialization }}">
                     </div>
                     <button type="submit"
                         class="bg-[#FCB634] px-4 py-2 rounded block text-[#673B8C] border-[#673B8C] border font-bold mt-5">{{ __('Save') }}

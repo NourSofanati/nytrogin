@@ -10,7 +10,7 @@ class InspectionApproval extends Model
     use HasFactory;
 
     protected $fillable = [
-        'inspection_id', 'user_id', 'feedback', 'approved'
+        'report_id', 'user_id', 'feedback', 'approved'
     ];
 
     public function project()

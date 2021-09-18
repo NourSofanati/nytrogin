@@ -20,7 +20,8 @@ class Area extends Model
 
     public function projects()
     {
-        return $this->hasMany(Project::class, 'area_id');
+        //return $this->hasMany(Project::class, 'area_id');
+        return $this->hasManyThrough(Project::class, City::class);
     }
 
     public function cities()

@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }"
-    class=" sm:relative absolute left-0 right-0 top-0 bottom-0 w-full md:w-[380px] border-l border-[#E9EAEB] bg-[#E5E6E7] z-10">
+    class=" sm:relative absolute left-0 right-0 top-0 bottom-0 w-full md:w-[380px] h-screen border-l border-[#E9EAEB] bg-[#E5E6E7] z-10">
     <!-- Primary Navigation Menu -->
     <div class="w-full flex justify-center p-5">
         <img src="{{ asset('images/logos.png') }}" alt="" srcset="">
@@ -33,7 +33,7 @@
                 @php
                     $words = explode(' ', auth()->user()->name);
                 @endphp
-                {{ Str::substr($words[0], 0, 1) . '.' . Str::substr($words[1], 0, 1) }}
+                {{ Str::substr($words[0], 0, 1)}}
             </div>
         </div>
 

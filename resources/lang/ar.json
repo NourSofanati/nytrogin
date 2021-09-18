@@ -9,6 +9,7 @@
     "procurators": "نائب المدير",
     "supervisors": "المشرفين",
     "inspectors": "المراقبين",
+    "Project Manager": "مدير المشروع",
     "approved_supervisor": "تم قبول المشروع من ناحية المشرفين, بانتظار موافقة نائب المدير",
     "approved_procurator": "تم قبول المشروع من نايحة نائم المدير, بانتظار موافقة المدير",
     "approved_admin": "تم قبول المشروع من ناحية المدير",
@@ -36,5 +37,19 @@
     "Create an area": "إضافة منطقة",
     "copyrights": "جميع الحقوق محفوظة لـ نيتروجين © 2021",
     "Whoops! Something went wrong.": "حدث خطأ ما",
-    "These credentials do not match our records.": "هذه المعلومات لا تتطابق مع سجلاتنا, تأكد من البريد الإلكتروني وكلمة المرور"
+    "These credentials do not match our records.": "هذه المعلومات لا تتطابق مع سجلاتنا, تأكد من البريد الإلكتروني وكلمة المرور",
+    "Inspector Name": "اسم المفتش",
+    "Project Name": "اسم المشروع",
+    "City / State": "المدينة / المحافظة",
+    "Inspection Date": "تاريخ زيارة التفتيش",
+    "Inspection Time": "وقت زيارة التفتيش",
+    "Permit ID": "رقم التصريح",
+    "Permit Expiration Date": "تاريخ انتهاء التصريح",
+    "Commercial license ID": "رقم السجل التجاري",
+    "Yes": "نعم",
+    "No": "لا",
+    "N\\A": "لا ينطبق",
+    "YES": "نعم",
+    "NO": "لا",
+    "Notes": "الملاحظات"
 }

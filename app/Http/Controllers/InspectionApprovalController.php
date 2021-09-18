@@ -37,6 +37,8 @@ class InspectionApprovalController extends Controller
     {
         //'inspection_id', 'user_id', 'feedback', 'approved'
         $inspectionApproval = InspectionApproval::create($request->all());
+
+        alert('تم إرسال طلب الموافقة', '', 'success');
         return redirect()->back();
     }
 

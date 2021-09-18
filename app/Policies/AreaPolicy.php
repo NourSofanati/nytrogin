@@ -31,7 +31,13 @@ class AreaPolicy
      */
     public function view(User $user, Area $area)
     {
-        //
+        return true;
+        // if ($user->role_id != Role::IS_INSPECTOR) return true; //
+        // else if ($user->area_id == $area->id) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     /**
@@ -42,7 +48,7 @@ class AreaPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**
@@ -54,7 +60,7 @@ class AreaPolicy
      */
     public function update(User $user, Area $area)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**
@@ -66,7 +72,7 @@ class AreaPolicy
      */
     public function delete(User $user, Area $area)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\InspectionMedia;
 use App\Models\Project;
 use App\Models\ProjectInspection;
 use App\Models\ProjectMedia;
+use App\Models\ProjectReport;
 use Illuminate\Http\Request;
 
 class ProjectInspectionController extends Controller
@@ -49,32 +50,11 @@ class ProjectInspectionController extends Controller
      */
     public function store(Request $request)
     {
-        $projectInspection = ProjectInspection::create($request->all());
-        // $files = $request->file('files');
-        // if ($request->hasFile('files')) {
-        //     foreach ($files as $file) {
-        //         $filename = time() . '-' . $file->getClientOriginalName();
-        //         // File extension
-        //         $extension = $file->getClientOriginalExtension();
-        //         // File upload location
-        //         $location = 'files';
-        //         // Upload file
-        //         $file->move($location, $filename);
-        //         // File path
-        //         $filepath = url('files/' . $filename);
-
-        //         //dd($file);
-
-        //         InspectionMedia::create([
-        //             'mimeType' => $file->getMimeType(),
-        //             'user_id' => auth()->user()->id,
-        //             'inspection_id' => $pI->id,
-        //             'url' => $filepath,
-        //             'filename' => $filename
-        //         ]);
-        //     }
-        // }
-        return redirect()->route('inspection.show', ['inspection' => $projectInspection]);
+        $report = ProjectReport::create($request->all());
+        $projectInspection = ProjectInspection::create($request->all() + ['report_id' => $report->id]);
+        alert('تم الحفظ', '', 'success');
+        // return redirect()->route('inspection.show', ['report' => $report]);
+        return redirect()->route('reports.show', ['report' => $report]);
     }
 
     /**

@@ -15,4 +15,9 @@ class City extends Model
     {
         return $this->belongsTo(Area::class, 'area_id');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

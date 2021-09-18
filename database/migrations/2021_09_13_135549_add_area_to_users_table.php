@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Area;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToProjectChecklistsTable extends Migration
+class AddAreaToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +14,8 @@ class AddStatusToProjectChecklistsTable extends Migration
      */
     public function up()
     {
-        Schema::table('project_checklists', function (Blueprint $table) {
-            $table->text('status');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignIdFor(Area::class,'area_id')->nullable();
         });
     }
 
@@ -25,8 +26,8 @@ class AddStatusToProjectChecklistsTable extends Migration
      */
     public function down()
     {
-        Schema::table('project_checklists', function (Blueprint $table) {
-            $table->dropColumn('status');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('area_id');
         });
     }
 }

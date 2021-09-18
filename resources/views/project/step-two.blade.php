@@ -30,6 +30,12 @@
                         <x-jet-button id="submitBtn" class="hidden mx-auto">
                             إرسال المشروع وتعييّن المشرفين
                         </x-jet-button>
+                        @if (auth()->user()->role_id != App\Models\Role::IS_PROJECT_MANAGER)
+                            <a id="pass" class="hidden mx-auto mt-5 text-lg"
+                                href="{{ route('projects.show', $project) }}">
+                                تمرير أختيار المراقبين و المشرفين من قبل مدير المشروع
+                            </a>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -43,6 +49,8 @@
                 success: function(data) {
                     $('#supervisors').html(data.html).fadeIn();
                     $('#submitBtn').toggle('hidden');
+
+                    $('#pass').toggle('hidden');
                 }
             });
         </script>

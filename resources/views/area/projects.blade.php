@@ -12,7 +12,7 @@
                     class="text-2xl text-[#673B8C] font-bold bg-[#FBB23A] col-span-full py-12 text-center  rounded-[50px]">
                     {{ $city->name }}
                 </div>
-                @if (auth()->user()->role_id == \App\Models\Role::IS_ADMIN || auth()->user()->role_id == \App\Models\Role::IS_PROCURATOR)
+                @if (auth()->user()->role_id == \App\Models\Role::IS_ADMIN || auth()->user()->role_id == \App\Models\Role::IS_PROJECT_MANAGER || auth()->user()->role_id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER)
 
                     <div class="mt-5 col-span-full">
                         <form action="{{ route('create_project') }}" method="post">

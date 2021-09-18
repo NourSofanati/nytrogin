@@ -20,7 +20,7 @@
                 </div>
             @endforeach
         </div>
-        @if (auth()->user()->role_id == \App\Models\Role::IS_ADMIN || auth()->user()->role_id == \App\Models\Role::IS_PROCURATOR)
+        @if (auth()->user()->role_id == \App\Models\Role::IS_ADMIN || auth()->user()->role_id == \App\Models\Role::IS_PROJECT_MANAGER || auth()->role_id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER)
             <div class="flex mt-5">
                 <a href="{{ route('users.create') }}"
                     class="bg-[#673B8C] rounded-xl shadow-md text-xl flex py-2 px-4 text-white font-bold mb-4">إنشاء حساب

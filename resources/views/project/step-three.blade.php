@@ -30,14 +30,17 @@
                         <x-jet-button id="submitBtn" class="hidden mx-auto text-lg">
                             تعيين المراقبين
                         </x-jet-button>
-                        <x-jet-button id="pass" class="hidden mx-auto mt-5 text-lg">
-                            تمرير أختيار المراقبين من قبل المشرف
-                        </x-jet-button>
+                        @if (auth()->user()->role_id != App\Models\Role::IS_SUPERVISOR)
+                            <x-jet-button id="pass" class="hidden mx-auto mt-5 text-lg">
+                                تمرير أختيار المراقبين من قبل المشرف
+                            </x-jet-button>
+                        @endif
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     @section('footerScripts')
         <script type="text/javascript">
             $.ajax({

@@ -128,7 +128,7 @@ class ProjectController extends Controller
                 'link' => route('projects.show', $project),
             ]);
         }
-        $procurators = User::all()->where('role_id', Role::IS_PROCURATOR);
+        $procurators = User::all()->where('role_id', Role::IS_DEPUTY_PROJECT_MANAGER);
         foreach ($procurators as $admin) {
             Notification::create([
                 'user_id' => $admin->id,
@@ -159,7 +159,6 @@ class ProjectController extends Controller
         $project->status = 'pending_4';
         $project->save();
         $admins = User::all()->where('role_id', Role::IS_ADMIN);
-        //$procurators = User::all()->where('role_id', Role::IS_PROCURATOR);
         foreach ($admins as $admin) {
             Notification::create([
                 'user_id' => $admin->id,

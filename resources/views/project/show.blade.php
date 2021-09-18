@@ -52,23 +52,19 @@
                     <span class="font-bold ">التقارير:
                     </span>
                     <div class="flex flex-col gap-2">
-                        @foreach ($project->inspections as $inspection)
-                            <a href="{{ route('inspection.show', $inspection) }}"
+                        @forelse ($project->reports as $inspection)
+                            <a href="{{ route('reports.show', $inspection) }}"
                                 class="w-full bg-white py-2 px-4 flex  rounded-xl shadow-lg my-2">
                                 <img src="{{ $inspection->user->profile_photo_url }}"
                                     alt="{{ auth()->user()->name }}"
                                     class="rounded-full h-10 w-10 object-cover ml-5">
                                 <p class="my-auto">تقرير {{ $inspection->user->name }}</p>
-                                <p class="my-auto mr-5 text-gray-600 text-sm">
-                                    ({{ __($inspection->type->name) }})
-                                </p>
                             </a>
-                        @endforeach
-                        @if ($project->inspections->count() == 0)
+                        @empty
                             <h1 class="text-xl">
                                 لا يوجد تقارير مدخلة حاليا.
                             </h1>
-                        @endif
+                        @endforelse
                         @can('create', \App\Models\ProjectInspection::class)
                             <form action="{{ route('create_inspection_report') }}" method="post">
                                 @csrf
@@ -91,7 +87,7 @@
                     <div class="flex justify-between py-2 text-lg">
 
 
-                        @if (auth()->user()->role->id == \App\Models\Role::IS_PROCURATOR && $project->status == 'pending_1')
+                        @if (auth()->user()->role->id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER && $project->status == 'pending_1')
                             <form action="{{ route('project.approve_project_procurator') }}" method="post">
                                 <input type="hidden" value="{{ $project->id }}" name="project_id">
                                 @csrf
@@ -106,7 +102,7 @@
                                     رفض
                                 </x-jet-button>
                             </form>
-                        @elseif(auth()->user()->role->id == \App\Models\Role::IS_ADMIN &&
+                        @elseif(auth()->user()->role->id == \App\Models\Role::IS_PROJECT_MANAGER) &&
                             $project->status == 'pending_4')
                             <form action="{{ route('project.approve_project_admin') }}" method="post">
                                 <input type="hidden" value="{{ $project->id }}" name="project_id">

@@ -127,7 +127,7 @@
                                 رفض
                             </x-jet-button>
                         </form>
-                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_PROCURATOR &&
+                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER &&
                         $project->checklist->status == 'pending_3')
                         <form action="{{ route('checklist.approve_checklist_procurator') }}" method="post">
                             <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">
@@ -143,7 +143,7 @@
                                 رفض
                             </x-jet-button>
                         </form>
-                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_ADMIN &&
+                    @elseif(auth()->user()->role->id == \App\Models\Role::IS_PROJECT_MANAGER &&
                         $project->checklist->status == 'pending_4')
                         <form action="{{ route('checklist.approve_checklist_admin') }}" method="post">
                             <input type="hidden" value="{{ $project->checklist->id }}" name="checklist_id">

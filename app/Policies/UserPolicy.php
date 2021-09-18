@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**
@@ -53,7 +53,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**
@@ -65,7 +65,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR;
+        return $user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER;
     }
 
     /**

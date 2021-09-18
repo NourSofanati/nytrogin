@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\OrganizationProject;
+use App\Models\ReportChecklist;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectChecklistsTable extends Migration
+class CreateReportCheckItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,12 @@ class CreateProjectChecklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_checklists', function (Blueprint $table) {
+        Schema::create('report_check_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(OrganizationProject::class, 'project_id');
-            $table->text('notes');
+            $table->foreignIdFor(ReportChecklist::class, 'checklist_id');
+            $table->text('inspection');
+            $table->enum('check', ['NO', 'YES', 'NA']);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateProjectChecklistsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_checklists');
+        Schema::dropIfExists('report_check_items');
     }
 }

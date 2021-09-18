@@ -26,7 +26,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Team::class => TeamPolicy::class,
         OrganizationProject::class => ProjectPolicy::class,
-        ProjectChecklist::class => ChecklistPolicy::class,
         ProjectInspection::class => InspectionPolicy::class,
 
     ];
@@ -39,8 +38,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Gate::define('see', function (User $user, User $other) {
-            return $user->role_id <= $other->role_id;
-        });
     }
 }

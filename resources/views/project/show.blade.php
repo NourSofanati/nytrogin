@@ -22,13 +22,54 @@
                     class="text-2xl text-[#673B8C] font-bold bg-[#FBB23A] col-span-full py-12 text-center   rounded-[50px]">
                     {{ $project->city->name }}
                 </div>
+                <div class="col-span-full">
+                    <div class="flex justify-end  gap-5">
+
+
+                        @if (auth()->user()->role->id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER && $project->status == 'pending_1')
+                            <form action="{{ route('project.approve_project_procurator') }}" method="post">
+                                <input type="hidden" value="{{ $project->id }}" name="project_id">
+                                @csrf
+                                <button type="submit" class="text-lg text-white rounded shadow px-4 py-2 tracking-tight bg-green-500">
+                                    موافقة
+                                </button>
+                            </form>
+                            <form action="{{ route('project.decline_project_procurator') }}" method="post">
+                                <input type="hidden" value="{{ $project->id }}" name="project_id">
+                                @csrf
+                                <button type="submit" class="text-lg text-white rounded shadow px-4 py-2 tracking-tight bg-red-500">
+                                    رفض
+                                </button>
+                            </form>
+                        @elseif((auth()->user()->role->id == \App\Models\Role::IS_PROJECT_MANAGER ||
+                            auth()->user()->role->id == \App\Models\Role::IS_ADMIN) &&
+                            ($project->status == 'pending_4' || $project->status == 'pending_1' ))
+                            <form action="{{ route('project.approve_project_admin') }}" method="post">
+                                <input type="hidden" value="{{ $project->id }}" name="project_id">
+                                @csrf
+                                <button type="submit" class="text-lg text-white rounded shadow px-4 py-2 tracking-tight bg-green-500">
+                                    موافقة
+                                </button>
+                            </form>
+                            <form action="{{ route('project.decline_project_admin') }}" method="post">
+                                <input type="hidden" value="{{ $project->id }}" name="project_id">
+                                @csrf
+                                <button type="submit" class="text-lg text-white rounded shadow px-4 py-2 tracking-tight bg-red-500">
+                                    رفض
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
                 <div class="flex flex-col col-span-2 gap-8">
-                    <div class="bg-[#E5E6E7] text-[#673B8C] border border-[#673B8C] px-4 py-3 mt-3 text-2xl rounded-3xl">
+                    <div
+                        class="bg-[#E5E6E7] text-[#673B8C] border border-[#673B8C] px-4 py-3 mt-3 text-2xl rounded-3xl">
 
                         <p class="w-full"><span class="font-bold ">اسم المشروع:
                             </span>{{ $project->name }}</p>
                     </div>
-                    <div class="bg-[#E5E6E7] text-[#673B8C] border border-[#673B8C] px-4 py-3 mt-3 text-2xl rounded-3xl">
+                    <div
+                        class="bg-[#E5E6E7] text-[#673B8C] border border-[#673B8C] px-4 py-3 mt-3 text-2xl rounded-3xl">
 
                         <p class="w-full">
                             <span class="font-bold ">
@@ -81,55 +122,6 @@
                             </form>
                         @endcan
                     </div>
-                </div>
-                <div class=" p-5 col-span-full relative">
-
-                    <div class="flex justify-between py-2 text-lg">
-
-
-                        @if (auth()->user()->role->id == \App\Models\Role::IS_DEPUTY_PROJECT_MANAGER && $project->status == 'pending_1')
-                            <form action="{{ route('project.approve_project_procurator') }}" method="post">
-                                <input type="hidden" value="{{ $project->id }}" name="project_id">
-                                @csrf
-                                <x-jet-button class="text-md tracking-tight bg-green-500">
-                                    موافقة
-                                </x-jet-button>
-                            </form>
-                            <form action="{{ route('project.decline_project_procurator') }}" method="post">
-                                <input type="hidden" value="{{ $project->id }}" name="project_id">
-                                @csrf
-                                <x-jet-button class="text-md tracking-tight bg-red-500">
-                                    رفض
-                                </x-jet-button>
-                            </form>
-                        @elseif(auth()->user()->role->id == \App\Models\Role::IS_PROJECT_MANAGER) &&
-                            $project->status == 'pending_4')
-                            <form action="{{ route('project.approve_project_admin') }}" method="post">
-                                <input type="hidden" value="{{ $project->id }}" name="project_id">
-                                @csrf
-                                <x-jet-button class="text-md tracking-tight bg-green-500">
-                                    موافقة
-                                </x-jet-button>
-                            </form>
-                            <form action="{{ route('project.decline_project_admin') }}" method="post">
-                                <input type="hidden" value="{{ $project->id }}" name="project_id">
-                                @csrf
-                                <x-jet-button class="text-md tracking-tight bg-red-500">
-                                    رفض
-                                </x-jet-button>
-                            </form>
-                        @endif
-                    </div>
-                    {{-- @if (($project->status == 'pending_1' || explode('_', $project->status)[0] == 'declined') && auth()->user()->role_id == \App\Models\Role::IS_INSPECTOR)
-                        <form action="{{ route('project.request_approval_from_supervisor') }}" method="post">
-                            @csrf
-                            <input type="hidden" value="{{ $project->id }}" name="project_id">
-                            <x-jet-button type="submit"
-                                class="mt-4 bg-[#FBBC41] tracking-tighter text-lg w-full md:w-1/2 lg:w-1/3">
-                                طلب الموافقة من المشرفين
-                            </x-jet-button>
-                        </form>
-                    @endif --}}
                 </div>
             </div>
         </div>

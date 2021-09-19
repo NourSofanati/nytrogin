@@ -71,16 +71,10 @@ class User extends Authenticatable
         return $this->hasMany(ProjectAssignment::class, 'user_id');
     }
 
-    public function assigned_to(OrganizationProject $project)
+    public function orgProjects()
     {
-        return $this->assignments()->where('project_id', $project->id)->count() > 0;
-    }
-    public function projects()
-    {
-        if ($this->role_id == Role::IS_PROJECT_MANAGER)
-            return $this->hasMany(Project::class, 'pm_id');
-        elseif ($this->role_id == Role::IS_DEPUTY_PROJECT_MANAGER)
-            return $this->hasMany(Project::class, 'dpm_id');
-        else return null;
+        if ($this->role_id == Role::IS_DEPUTY_PROJECT_MANAGER)
+            return $this->hasMany(OrgProject::class, 'dpm_id');
+        return $this->hasMany(OrgProject::class, 'pm_id');
     }
 }

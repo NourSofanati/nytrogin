@@ -4,13 +4,11 @@
 
     <div class="py-12 px-6">
         <div>
-            <div class="grid grid-cols-4 mb-4 bg-white border-2 p-4 ">
-                <div class="overflow-hidden">
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
+                <div class="bg-white border-2 p-2 overflow-hidden rounded-xl hidden">
                     <canvas id="myChart" width="400" height="200"></canvas>
                 </div>
-            </div>
-            <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8">
-                {{-- <p class="text-4xl font-bold text-[#673B8C] text-center col-span-full">
+                <p class="text-4xl font-bold text-[#673B8C] text-center col-span-full">
                     المشاريع
                 </p>
                 <div
@@ -30,11 +28,12 @@
                         <div class="font-bold text-[#FCB634] text-6xl">{{ $newProjects->count() }}</div>
                     </div>
 
-                </div> --}}
+                </div>
 
-                {{-- <hr class=" col-span-full"> --}}
-                {{-- @forelse ($areas as $area)
+                <hr class=" col-span-full">
+                @forelse ($areas as $area)
                     @can('view', $area)
+
                         <a href="{{ route('area.show', $area) }}"
                             class="bg-[#E5E6E7] py-12 px-4 text-center relative font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px]">
                             {{ $area->name }}
@@ -49,20 +48,7 @@
                     @endcan
                 @empty
 
-                @endforelse --}}
-                @can('create', \App\Models\OrgProject::class)
-                    <a href="{{ route('organization_projects.create') }}"
-                        class="bg-[#673B8C] py-12 px-4 text-center relative font-bold text-2xl border text-white rounded-[50px] flex justify-center">
-                        <span class="material-icons my-auto">add</span> <span
-                            class="my-auto">{{ __('Create a new project') }}</span>
-                    </a>
-                @endcan
-                @foreach (\App\Models\OrgProject::all() as $project)
-                    <a href="{{ route('organization_projects.show', $project) }}"
-                        class="bg-[#E5E6E7] py-12 px-4 text-center relative font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px] ">
-                        {{ $project->name }}
-                    </a>
-                @endforeach
+                @endforelse
             </div>
         </div>
     </div>
@@ -116,29 +102,55 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"
                 integrity="sha256-bC3LCZCwKeehY6T4fFi9VfOU0gztUa+S4cnkIhVPZ5E=" crossorigin="anonymous"></script>
         <script>
+            $('#showNewProjects').click(function() {
+                $('#modalTitle').text('المشاريع الجديدة');
+                $('[data-state]').addClass('hidden');
+                $('[data-state=\'new\']').removeClass('hidden');
+                $('#projectsModal').removeClass('hidden');
+            })
+            $('#showInProgressProjects').click(function() {
+                $('#modalTitle').text('المشاريع قيد الإنجاز');
+                $('[data-state]').addClass('hidden');
+                $('[data-state=\'inProgress\']').removeClass('hidden');
+                $('#projectsModal').removeClass('hidden');
+            })
+            $('#showCompletedProjects').click(function() {
+                $('#modalTitle').text('المشاريع المنجزة');
+                $('[data-state]').addClass('hidden');
+                $('[data-state=\'completed\']').removeClass('hidden');
+                $('#projectsModal').removeClass('hidden');
+            })
+            $('#exit_button').click(function(e) {
+                e.preventDefault();
+                $('#projectsModal').addClass('hidden');
+            });
             var ctx = document.getElementById('myChart').getContext('2d');
-
-            $.ajax({
-                type: "GET",
-                url: "{{ route('projects_chart') }}",
-                success: function(response) {
-                    console.log(response);
-                    var myChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: Object.keys(response),
-                            datasets: [{
-                                label: '# of Votes',
-                                data: Object.values(response),
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                ]
-                            }]
-                        },
-                    });
-                }
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
             });
         </script>
 

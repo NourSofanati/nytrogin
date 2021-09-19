@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'description', 'city_id', 'comments', 'status', 'deadline', 'pm_id', 'dpm_id'
+        'name', 'description', 'city_id', 'comments', 'status', 'deadline', 'org_project_id', 'category_id'
     ];
     public function city()
     {
@@ -38,5 +38,9 @@ class Project extends Model
     public function reports()
     {
         return $this->hasMany(ProjectReport::class, 'project_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(ProjectCategory::class, 'category_id');
     }
 }

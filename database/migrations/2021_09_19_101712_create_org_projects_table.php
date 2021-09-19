@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\City;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsTable extends Migration
+class CreateOrgProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,11 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('org_projects', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->foreignIdFor(City::class, 'city_id')->nullable();
-            $table->text('description')->nullable();
-            $table->dateTime('deadline');
+            $table->foreignIdFor(User::class, 'pm_id');
+            $table->foreignIdFor(User::class, 'dpm_id')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('org_projects');
     }
 }

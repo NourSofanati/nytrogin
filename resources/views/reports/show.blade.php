@@ -10,9 +10,64 @@
         <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
             التفتيش على الفعاليات الترفيهية
         </div>
+
+        <div class="flex justify-end mt-5">
+            @if ($report->user->id == auth()->user()->id)
+                @if ($report->isApproved->count() == 0 && $report->isPending->count() == 0)
+                    <form action="{{ route('approvals.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="report_id" value="{{ $report->id }}">
+                        <button type="submit"
+                            class="bg-[#FBB445] text-[#673B8C] text-lg font-bold py-2 px-4 mb-4 rounded-lg shadow">
+                            طلب الموافقة
+                        </button>
+                    </form>
+                @elseif($report->isApproved->count() > 0 )
+                    <p class="text-green-800 mb-4">
+                        تم قبول هذا التقرير
+                    </p>
+                @elseif($report->isPending->count() > 0 )
+                    <p class="text-gray-800 mb-4">
+                        هذا المشروع بإنتظار الموافقة
+                    </p>
+                @endif
+            @elseif (auth()->user()->role_id == \App\Models\Role::IS_SUPERVISOR)
+                @if ($report->isPending->count() > 0)
+
+                    @foreach ($report->isPending as $approval)
+                        {{-- 'report_id', 'user_id', 'feedback', 'approved' --}}
+                        <form action="{{ route('approvals.update', $approval) }}" method="post">
+                            @csrf
+                            @method('put')
+                            <input type="hidden" name="report_id" value="{{ $report->id }}">
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="approved" value="1">
+
+                            <button type="submit"
+                                class="bg-green-500 text-white text-lg font-bold py-2 px-4 mb-4 rounded-lg shadow">
+                                موافقة
+                            </button>
+                        </form>
+                        <form action="{{ route('approvals.update', $approval) }}" method="post" id="decline_form">
+                            @csrf
+                            @method('put')
+                            <input type="hidden" name="report_id" value="{{ $report->id }}">
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="approved" value="0">
+                            <input type="text" name="feedback" id="feedback" class="hidden">
+                            <button type="submit"
+                                class="bg-red-500 text-white text-lg font-bold py-2 px-4 mb-4 rounded-lg shadow mr-4">
+                                رفض
+                            </button>
+                        </form>
+                    @endforeach
+                @endif
+            @endif
+
+        </div>
         <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
             @csrf
-            {{-- 'user_id', 'project_id', 'license_id', 'report_date', 'report_time', 'licence_expiration', 'commercial_license_id' --}}
+
             <div class="mt-3 border-2 bg-white rounded-xl py-4 px-2 text-lg grid grid-cols-2">
                 <div class=" flex flex-col gap-4 w-full xl:w-1/2 p-5">
                     <div class="border-b py-2">
@@ -74,159 +129,82 @@
                                 </td>
                                 <td
                                     class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
-                                    <input type="file" class="hidden" multiple name="row[${index}][files]"
-                                        id="files-${index}" class="border-none w-full h-full">
+                                    @switch($item->attachments->count())
+                                        @case(1)
+                                            <span class="cursor-pointer" data-attachmentShow
+                                                data-id="{{ $item->id }}">مرفق واحد</span>
+                                        @break
+                                        @case(2)
+                                            <span class="cursor-pointer" data-attachmentShow
+                                                data-id="{{ $item->id }}">مرفقين</span>
+                                        @break
+                                        @case(0)
+                                            <span>لا يوجد</span>
+                                        @break
+                                        @default
+                                            <span class="cursor-pointer" data-attachmentShow
+                                                data-id="{{ $item->id }}">{{ $item->attachments->count() }}
+                                                مرفقات</span>
 
+                                    @endswitch
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
-                    {{-- <tfoot>
-                        <tr>
-                            <td colspan="4">
-                                <button
-                                    class="w-full h-full py-2 bg-gray-50 hover:bg-indigo-50 transition-all duration-100 text-gray-700 text-xl flex justify-center"
-                                    id="addNewCheckItem">
-                                    <span class="my-auto">{{ __('Add new line') }}</span>
-                                    <span class="material-icons my-auto">add</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tfoot> --}}
                 </table>
             </div>
-            {{-- <div class="mt-3 rounded-xl p-8 text-lg">
-                <button type="submit" class="bg-green-500 text-xl rounded py-4 px-4 text-white w-full">حفظ</button>
-            </div> --}}
         </form>
     </div>
+    <div class="absolute top-0 left-0 right-0 bottom-0 lg:right-[380px] bg-black/20  backdrop-blur-md grid place-content-center place-items-center overflow-hidden hidden"
+        id="attachmentsModal">
+        <div class="bg-white shadow-xl rounded p-2">
 
+            <div class="py-4 px-8 ">
+                <div class="flex justify-between">
+                    <h1 class="text-xl font-bold text-[#673B8c] my-auto tracking-tight" id="modalTitle">
+                        المرفقات
+                    </h1>
+                    <div id="exit_button"
+                        class="text-[#673B8c] my-auto text-3xl cursor-pointer hover:text-red-500 transition duration-75">
+                        &times;</div>
+                </div>
+                <div class="flex gap-4 mt-5 max-h-[500px] overflow-y-auto flex-wrap justify-center"
+                    id="attachments-display">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     @push('custom-scripts')
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            //import Swal from 'sweetalert2'
-            //             let index = 0;
-            //             let defaultCheckItems = `هل المنشأة تحمل تصريح ساري المفعول من الهيئة العامة للترفيه  ,
-    // هل تم الالتزام بالسماح للمفتشين بالدخول لموقع النشاط وتسهيل أدائهم لمهامهم,
-    // هل تم الالتزام بإيقاف الموسيقى والعروض قبل الاذان ب15 دقيقه وحتى 45 دقيقة بعد الأذان,
-    // هل تم الالتزام بعدم خروج الصوت خارج حدود مقر النشاط,
-    // هل تم توفير بطاقات تعريفية للعاملين، وسترات مميزة تبين مهامهم.,
-    // هل تم التعاقد مع شركات الحراسات الأمنية المرخصة لحفظ الأمن والسلامة وتوفير الحراسة من الجنسين حسب فئة الزوار المستهدفة ,
-    // هل تم عرض خريطة تفصيلية للموقع بشكل واضح للزوار ولوحات إرشادية داخل وخارج الموقع,
-    // هل تم الالتزام بالمظهر اللائق والسلوك الاحترافي.,
-    // هل تم الالتزام ببيع التذاكر من خلال مزود خدمة معتمد من قبل الهيئة,
-    // هل تم الالتزام بتعيين مسؤول متواجد طوال فترة الفعالية,
-    // هل تم الالتزام بتوفير كاميرات مراقبة في الفعالية`;
-
-            //             // protected $fillable = ['checklist_id', 'check', 'notes', 'inspection'];
-
-            //             defaultCheckItems.split(',').forEach(function(item) {
-            //                 let chechItemRowHtml = ` <tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
-    //                                 <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-    //                                     <textarea name="row[${index}][inspection]" id=""
-    //                                         class="border-none w-full h-full" rows="3">${item}</textarea>
-    //                                 </td>
-    //                                 <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-    //                                     <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0">
-    //                                         <option value="YES">{{ __('Yes') }}</option>
-    //                                         <option value="NO">{{ __('No') }}</option>
-    //                                         <option value="N\\A">{{ __('N\\A') }}</option>
-    //                                     </select>
-    //                                 </td>
-    //                                 <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-    //                                     <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
-    //                                 </td>
-    //                                 <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
-    //                                     <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
-
-    //                                 </td>
-    //                             </tr>`;
-            //                 $('#checkItemLines').append(chechItemRowHtml);
-            //             })
-
-            $('#addNewCheckItem').click(function(e) {
+            $('[data-attachmentShow]').click(function(e) {
                 e.preventDefault();
-                let chechItemRowHtml = `<tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <textarea name="row[${index}][inspection]" id=""
-                                        class="border-none w-full h-full" rows="3" required></textarea>
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0" required>
-                                        <option value="YES">{{ __('Yes') }}</option>
-                                        <option value="NO">{{ __('No') }}</option>
-                                        <option value="N\\A">{{ __('N\\A') }}</option>
-                                    </select>
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
-                                    <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
-
-                                </td>
-                            </tr>`;
-                $('#checkItemLines').append(chechItemRowHtml);
-            });
-            $('#upload_files').on('click', function(event) {
-                event.preventDefault();
-                $('#file').trigger('click')
-            });
-            $('#file').change(function() {
-                // Get the selected file
-                var files = $('#file')[0].files;
-                $('#preview').html(``);
-                Object.values(files).forEach(file => {
-
-                    if (file.type.indexOf('image/') >= 0) {
-                        let previewHtml =
-                            `<img class="bg-white rounded-3xl h-[150px] min-w-[150px] max-w-[150px] w-[150px] shadow-lg object-cover border-2" src="${URL.createObjectURL(file)}"/>`;
-                        $('#preview').append(previewHtml);
-                    } else {
-                        let previewHtml =
-                            `<video src="${URL.createObjectURL(file)}" class="h-[150px] min-w-[150px] shadow-lg rounded-3xl border-2" controls></video>`;
-                        $('#preview').append(previewHtml);
-                    }
-                });
-            });
-            $('#addNewTypeForm').submit(function(e) {
-                e.preventDefault();
-
-                let formData = new FormData(this);
                 $.ajax({
-                    type: "POST",
-                    url: "{{ route('types.store') }}",
-                    data: formData,
-
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        $('#addNewTypeModal').addClass('hidden');
-                        Swal.fire({
-                            'title': 'تم إضافة نوع ملاحظة / مشكلة',
-                            'icon': 'success'
+                    type: "GET",
+                    url: `{{ route('get_checkitem_attachments') }}?checkitem_id=` + this.dataset.id,
+                    success: function(data) {
+                        let attachmentsHtml = ``;
+                        attachmentsHtml = data.map(attachment => {
+                            if (attachment.mimeType.indexOf('image') >= 0) {
+                                return `<a href="${attachment.url}" target="_blank"><img src="${attachment.url}" alt="image" class="w-[150px] h-[150px] rounded border-2 object-cover" /></a>`;
+                            } else {
+                                return `<video src="${attachment.url}" class="min-w-[150px] h-[150px] rounded border-2" controls/>`;
+                            }
                         });
-                        let options = ``;
-                        console.log(response.types);
-                        response.types.forEach(type => {
-                            options +=
-                                `<option value="${type.id}" ${type.name == e.target.name.value? 'selected' : ''}>${type.name}</option>`;
-                        });
-                        console.log(options);
-                        $('#type_id').html(options);
+                        // console.log(attachmentsHtml);
+                        $('#attachments-display').html(attachmentsHtml);
+                        $('#attachmentsModal').removeClass('hidden');
                     }
                 });
             });
             $('#exit_button').click(function(e) {
                 e.preventDefault();
-                $('#addNewTypeModal').addClass('hidden');
-            });
-            $('#addNewType').click(function(e) {
-                e.preventDefault();
-                $('#addNewTypeModal').removeClass('hidden');
+                $('#attachmentsModal').addClass('hidden');
+                $('#attachments-display').html('');
             });
         </script>
     @endpush

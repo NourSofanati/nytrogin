@@ -8,6 +8,7 @@ use App\Http\Controllers\InspectionApprovalController;
 use App\Http\Controllers\InspectionTypeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OrgProjectController;
 use App\Http\Controllers\ProjectChecklistController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectInspectionController;
@@ -17,6 +18,7 @@ use App\Models\InspectionMedia;
 use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Models\ReportCheckItem;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -37,6 +39,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resource('organization_projects', OrgProjectController::class);
     Route::resource('inspection', ProjectInspectionController::class);
     Route::resource('approvals', InspectionApprovalController::class);
     Route::post('create_inspection_report', [ProjectInspectionController::class, 'create_inspection_report'])->name('create_inspection_report');
@@ -65,7 +68,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('checklist', ProjectChecklistController::class);
     Route::resource('organizations', OrganizationController::class);
-    Route::resource('area', AreaController::class);
+    Route::get('area/create/{orgProject_id}', [AreaController::class, 'create'])->name('area.create');
+    Route::resource('area', AreaController::class)->except(['create']);
     Route::resource('category', CategoryController::class);
     Route::resource('cities', CityController::class);
     Route::resource('types', InspectionTypeController::class);
@@ -151,3 +155,23 @@ Route::post('upload_file', function (Request $request) {
 
 Route::post('attemptLogin', [UserController::class, 'sendOtp'])->name('attemptLogin');
 Route::post('loginOtp', [UserController::class, 'loginOtp'])->name('loginOtp');
+
+Route::get('getAttachments', function (Request $request) {
+    $checkitem = ReportCheckItem::find($request->checkitem_id);
+    return response()->json($checkitem->attachments);
+})->name('get_checkitem_attachments');
+
+
+Route::prefix('charts')->group(function () {
+    Route::get('projects_chart', function (Request $request) {
+
+        $completedProjects = Project::where('status', 'done_5')->get()->count();
+        $inProgressProjects = Project::whereHas('reports')->where('status', '!=', 'done_5')->get()->count();
+        $newProjects = Project::doesntHave('reports')->get()->count();
+        return response()->json([
+            __('Completed projects') => $completedProjects,
+            __('In progress projects') => $inProgressProjects,
+            __('New projects') => $newProjects,
+        ]);
+    })->name('projects_chart');
+});

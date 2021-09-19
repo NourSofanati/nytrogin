@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InspectionApproval;
+use App\Models\ProjectCategory;
 use Illuminate\Http\Request;
 
-class InspectionApprovalController extends Controller
+class ProjectCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,19 +35,16 @@ class InspectionApprovalController extends Controller
      */
     public function store(Request $request)
     {
-        $inspectionApproval = InspectionApproval::create($request->all());
-
-        alert('تم إرسال طلب الموافقة', '', 'success');
-        return redirect()->back();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\InspectionApproval  $inspectionApproval
+     * @param  \App\Models\ProjectCategory  $projectCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(InspectionApproval $inspectionApproval)
+    public function show(ProjectCategory $projectCategory)
     {
         //
     }
@@ -55,10 +52,10 @@ class InspectionApprovalController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\InspectionApproval  $inspectionApproval
+     * @param  \App\Models\ProjectCategory  $projectCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(InspectionApproval $inspectionApproval)
+    public function edit(ProjectCategory $projectCategory)
     {
         //
     }
@@ -67,25 +64,21 @@ class InspectionApprovalController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\InspectionApproval  $inspectionApproval
+     * @param  \App\Models\ProjectCategory  $projectCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $inspection)
+    public function update(Request $request, ProjectCategory $projectCategory)
     {
-        $inspection = InspectionApproval::find($inspection);
-
-        $inspection->update($request->all());
-
-        return redirect()->back();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\InspectionApproval  $inspectionApproval
+     * @param  \App\Models\ProjectCategory  $projectCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InspectionApproval $inspectionApproval)
+    public function destroy(ProjectCategory $projectCategory)
     {
         //
     }

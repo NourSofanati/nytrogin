@@ -11,7 +11,7 @@ class Area extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'alias', 'region_id'];
+    protected $fillable = ['name', 'alias', 'region_id', 'org_project_id'];
 
     public function organizations()
     {

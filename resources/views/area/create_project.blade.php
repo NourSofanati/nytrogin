@@ -28,6 +28,17 @@
                             class="border-none px-4 py-2  focus:outline-none active:border-none w-full h-full bg-transparent "
                             placeholder="وصف المشروع"></textarea>
                     </div>
+                    <div class="px-4 py-4 bg-[#E5E6E7] rounded-xl mt-3 shadow">
+                        <label for="category_id" class="block mb-3">
+                            {{ __('Project Category') }} <span class="text-red-500">*</span>
+                        </label>
+                        <select name="category_id" id="category_id" class=" border rounded w-full border-gray-400 bg-gray-50"
+                            required>
+                            @foreach (\App\Models\ProjectCategory::all() as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="px-4 py-3 bg-[#E5E6E7] rounded-xl mt-3 shadow">
                         <label for="deadline" class="block mb-3">
                             تاريخ تسليم المشروع <span class="text-red-500">*</span>
@@ -35,17 +46,8 @@
                         <input type="datetime-local" name="deadline" required
                             class=" border rounded w-full border-gray-400 bg-gray-50">
                     </div>
-                    <div class="px-4 py-4 bg-[#E5E6E7] rounded-xl mt-3 shadow">
-                        <label for="pm_id" class="block mb-3">
-                            {{ __('Project Manager') }} <span class="text-red-500">*</span>
-                        </label>
-                        <select name="pm_id" id="pm_id" class=" border rounded w-full border-gray-400 bg-gray-50"
-                            required>
-                            @foreach (\App\Models\User::all()->where('role_id', \App\Models\Role::IS_PROJECT_MANAGER) as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <input type="hidden" value={{ $city->area->org_project_id }} name="org_project_id" />
+
                     <button type="submit" class="text-white bg-[#673B8C] mt-5 shadow-xl py-2 px-4 font-bold rounded-xl">
                         إنشاء مشروع جديد
                     </button>

@@ -10,7 +10,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2">
                 <form action="{{ route('area.store') }}" method="post" autocomplete="off">
                     @csrf
+                    <input type="hidden" name="org_project_id" value="{{ $orgProject }}" />
+
                     <label for="name" class="mt-5 block">اسم المنطقة</label>
+
                     <input class="block border border-gray-400 bg-gray-100 rounded w-full"
                         placeholder="{{ __('Name') }}" type="text" name="name" id="name" autocomplete="off">
 

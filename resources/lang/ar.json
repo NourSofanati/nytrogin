@@ -10,6 +10,8 @@
     "supervisors": "المشرفين",
     "inspectors": "المراقبين",
     "Project Manager": "مدير المشروع",
+    "project_manager": "مدير مشروع",
+    "deputy_project_manager": "نائب مدير مشروع",
     "approved_supervisor": "تم قبول المشروع من ناحية المشرفين, بانتظار موافقة نائب المدير",
     "approved_procurator": "تم قبول المشروع من نايحة نائم المدير, بانتظار موافقة المدير",
     "approved_admin": "تم قبول المشروع من ناحية المدير",
@@ -51,5 +53,7 @@
     "N\\A": "لا ينطبق",
     "YES": "نعم",
     "NO": "لا",
-    "Notes": "الملاحظات"
+    "Notes": "الملاحظات",
+    "Create a new project": "إنشاء مشروع جديد",
+    "Project Category": "نوع المشروع"
 }

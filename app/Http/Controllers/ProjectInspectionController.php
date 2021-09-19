@@ -50,6 +50,7 @@ class ProjectInspectionController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $report = ProjectReport::create($request->all());
         $projectInspection = ProjectInspection::create($request->all() + ['report_id' => $report->id]);
         alert('تم الحفظ', '', 'success');

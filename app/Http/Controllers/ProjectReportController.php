@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProjectInspection;
 use App\Models\ProjectReport;
 use App\Models\ReportCheckItem;
+use App\Models\ReportCheckItemAttachment;
 use App\Models\ReportChecklist;
 use Illuminate\Http\Request;
 
@@ -38,16 +39,27 @@ class ProjectReportController extends Controller
      */
     public function store(Request $request)
     {
+
         $projectReport = ProjectReport::create($request->all());
         $reportChecklist = ReportChecklist::create(['report_id' => $projectReport->id]);
-        foreach ($request->row as $row) {
+        foreach ($request->row as $index => $row) {
             $checkItem = ReportCheckItem::create($row + ['checklist_id' => $reportChecklist->id]);
+            if ($request->hasFile('row.' . $index . '.files')) {
+                foreach ($request->file('row.' . $index . '.files') as $file) {
+                    $filename = time() . '_' . rand(100, 999) . '_' . $file->getClientOriginalName();
+                    $mimeType = $file->getClientMimeType();
+                    $location = 'files';
+                    $file->move($location, $filename);
+                    $filepath = url($location . '/', $filename);
+                    ReportCheckItemAttachment::create(['checkitem_id' => $checkItem->id, 'name' => $filename, 'url' => $filepath, 'mimeType' => $mimeType]);
+                }
+            }
         }
-        dd('ok!');
+
         // $projectInspection = ProjectInspection::create($request->all());
         // $report = ProjectReport::find($request->report_id);
 
-        // return redirect()->route('reports.show', ['report' => $report]);
+        return redirect()->route('reports.show', ['report' => $projectReport]);
     }
 
     /**

@@ -7,7 +7,7 @@
 
     <div class="xl:p-12 xl:p-8 p-4">
         <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
-            التفتيش على الفعاليات الترفيهية
+            التفتيش على {{ __($project->category->name) }}
         </div>
         <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
             @csrf
@@ -21,7 +21,21 @@
                             name="user_name" id="user_name" value="{{ auth()->user()->name }}" disabled />
                     </div>
                     <div class="grid grid-cols-4">
-                        <label class="my-auto" for="project_name">{{ __('Project Name') }}</label>
+                        <label class="my-auto" for="project_name">
+                            @switch($project->category->name)
+                                @case('مراكز الترفيه ومدن الملاهي')
+                                    {{ __('اسم المركز الترفيهي') }} :
+                                @break
+                                @case('الفعاليات الترفيهية')
+                                    {{ __('اسم ومكان الفعالية') }} :
+                                @break
+                                @case('العروض الحية في المطاعم والمقاهي')
+                                    {{ __('اسم المطعم/المقهى') }} :
+                                @break
+                                @default
+
+                            @endswitch
+                        </label>
                         <input type="hidden" name="project_id" id="project_id" value="{{ $project->id }}" />
                         <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
                             name="project_name" id="project_name" value="{{ $project->name }}" disabled />
@@ -74,7 +88,45 @@
                         </tr>
                     </thead>
                     <tbody id="checkItemLines">
-
+                        @foreach (explode(',', $project->category->comma_seperated_list) as $index => $value)
+                            <tr data-index="{{ $index }}"
+                                class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg xl:shadow-none relative">
+                                <td
+                                    class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <textarea name="row[{{ $index }}][inspection]" id=""
+                                        class="border-none w-full h-full" rows="3">{{ trim($value) }}</textarea>
+                                    <div class="absolute top-0 -right-7 bottom-0 text-xl flex"><span
+                                            class="material-icons my-auto bg-gray-300 rounded-full cursor-pointer hover:bg-red-500 text-white"
+                                            onclick="confirm('{{ 'Are you sure you want to delete this item?' }}') && $('[data-index={{ $index }}]').remove()">close</span>
+                                    </div>
+                                </td>
+                                <td
+                                    class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <select name="row[{{ $index }}][check]" id=""
+                                        class="border-none w-full h-full m-0">
+                                        <option value="YES">{{ __('Yes') }}</option>
+                                        <option value="NO">{{ __('No') }}</option>
+                                        <option value="NA">{{ __('N\\A') }}</option>
+                                    </select>
+                                </td>
+                                <td
+                                    class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+                                    <input type="text" name="row[{{ $index }}][notes]" id=""
+                                        class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
+                                </td>
+                                <td
+                                    class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
+                                    <input type="file" class="hidden" multiple
+                                        name="row[{{ $index }}][files][]" id="files-{{ $index }}"
+                                        class="border-none w-full h-full" accept="image/*,video/*"
+                                        data-index="{{ $index }}">
+                                    <span id="filecount-{{ $index }}"></span>
+                                    <span
+                                        class="material-icons my-auto h-full w-full cursor-pointer hover:text-green-400"
+                                        onclick="$('#files-{{ $index }}').trigger('click')">attach_file</span>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -103,7 +155,11 @@
 
         <script>
             //import Swal from 'sweetalert2'
-            let index = 0;
+            $('input[type=file]').change(function(e) {
+                e.preventDefault();
+                $('#filecount-' + this.dataset.index).html('تم تحديد ' + this.files.length + ' ملفات');
+            });
+            let index = {{ 0 }};
             let defaultCheckItems = `هل المنشأة تحمل تصريح ساري المفعول من الهيئة العامة للترفيه  ,
 هل تم الالتزام بالسماح للمفتشين بالدخول لموقع النشاط وتسهيل أدائهم لمهامهم,
 هل تم الالتزام بإيقاف الموسيقى والعروض قبل الاذان ب15 دقيقه وحتى 45 دقيقة بعد الأذان,
@@ -118,29 +174,29 @@
 
             // protected $fillable = ['checklist_id', 'check', 'notes', 'inspection'];
 
-            defaultCheckItems.split(',').forEach(function(item) {
-                let chechItemRowHtml = ` <tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <textarea name="row[${index}][inspection]" id=""
-                                        class="border-none w-full h-full" rows="3">${item}</textarea>
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0">
-                                        <option value="YES">{{ __('Yes') }}</option>
-                                        <option value="NO">{{ __('No') }}</option>
-                                        <option value="N\\A">{{ __('N\\A') }}</option>
-                                    </select>
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
-                                    <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
-                                </td>
-                                <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
-                                    <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
+            // defaultCheckItems.split(',').forEach(function(item) {
+            //     let chechItemRowHtml = ` <tr data-index="${index++}" class="bg-white xl:hover:bg-gray-100 flex xl:table-row flex-row xl:flex-row flex-wrap xl:flex-no-wrap mb-10 xl:mb-0 border-collapse shadow-lg">
+    //                     <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+    //                         <textarea name="row[${index}][inspection]" id=""
+    //                             class="border-none w-full h-full" rows="3">${item}</textarea>
+    //                     </td>
+    //                     <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+    //                         <select name="row[${index}][check]" id="" class="border-none w-full h-full m-0">
+    //                             <option value="YES">{{ __('Yes') }}</option>
+    //                             <option value="NO">{{ __('No') }}</option>
+    //                             <option value="N\\A">{{ __('N\\A') }}</option>
+    //                         </select>
+    //                     </td>
+    //                     <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
+    //                         <input type="text" name="row[${index}][notes]" id="" class="border-none w-full h-full" placeholder="{{ __('Notes') }}">
+    //                     </td>
+    //                     <td class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static ">
+    //                         <input type="file" class="hidden" multiple name="row[${index}][files]" id="files-${index}" class="border-none w-full h-full">
 
-                                </td>
-                            </tr>`;
-                $('#checkItemLines').append(chechItemRowHtml);
-            })
+    //                     </td>
+    //                 </tr>`;
+            //     $('#checkItemLines').append(chechItemRowHtml);
+            // })
 
             $('#addNewCheckItem').click(function(e) {
                 e.preventDefault();

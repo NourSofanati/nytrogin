@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\OrgProject;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -23,9 +24,9 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($orgProject)
     {
-        return view('area.create');
+        return view('area.create', compact('orgProject'));
     }
 
     /**
@@ -37,8 +38,9 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Area::class);
-        Area::create($request->all());
-        return redirect()->route('area.index');
+        $area = Area::create($request->all());
+        $orgProject = OrgProject::find($request->org_project_id);
+        return redirect()->route('organization_projects.show', $orgProject);
     }
 
     /**

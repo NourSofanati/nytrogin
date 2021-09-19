@@ -36,15 +36,15 @@ class DatabaseSeeder extends Seeder
             'name' => 'organization'
         ]);
 
-        Area::create([
-            'name' => 'المنطقة الشرقية',
-        ]);
-        Area::create([
-            'name' => 'المنطقة الوسطى',
-        ]);
-        Area::create([
-            'name' => 'المنطقة الغربية',
-        ]);
+        // Area::create([
+        //     'name' => 'المنطقة الشرقية',
+        // ]);
+        // Area::create([
+        //     'name' => 'المنطقة الوسطى',
+        // ]);
+        // Area::create([
+        //     'name' => 'المنطقة الغربية',
+        // ]);
 
         User::create([
             'name' => 'عبدالله الحمديان',

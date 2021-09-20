@@ -41,7 +41,7 @@ class ProjectReportController extends Controller
     {
 
         $projectReport = ProjectReport::create($request->all());
-        $reportChecklist = ReportChecklist::create(['report_id' => $projectReport->id]);
+        $reportChecklist = ReportChecklist::create($request->all() + ['report_id' => $projectReport->id]);
         foreach ($request->row as $index => $row) {
             $checkItem = ReportCheckItem::create($row + ['checklist_id' => $reportChecklist->id]);
             if ($request->hasFile('row.' . $index . '.files')) {
@@ -81,9 +81,11 @@ class ProjectReportController extends Controller
      * @param  \App\Models\ProjectReport  $projectReport
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProjectReport $projectReport)
+    public function edit( $projectReport)
     {
-        //
+        $projectReport = ProjectReport::find($projectReport);
+        // dd($projectReport);
+        return view('inspection.edit', compact('projectReport'));
     }
 
     /**

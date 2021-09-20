@@ -1275,12 +1275,12 @@ select {
   grid-column: 1 / -1;
 }
 
-.col-span-5 {
-  grid-column: span 5 / span 5;
-}
-
 .col-span-2 {
   grid-column: span 2 / span 2;
+}
+
+.col-span-5 {
+  grid-column: span 5 / span 5;
 }
 
 .col-span-3 {
@@ -1433,6 +1433,10 @@ select {
   margin-bottom: 2.5rem;
 }
 
+.mb-\[4rem\] {
+  margin-bottom: 4rem;
+}
+
 .mb-3 {
   margin-bottom: 0.75rem;
 }
@@ -1451,6 +1455,10 @@ select {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
 }
 
 .block {
@@ -1829,12 +1837,12 @@ select {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .flex-row {

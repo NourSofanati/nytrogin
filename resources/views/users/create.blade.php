@@ -24,7 +24,9 @@
                     <label for="name" class="mt-5 block">{{ __('Role') }}</label>
                     <select name="role_id" id="role_id" class=" border-gray-400 bg-gray-100 rounded w-1/2">
                         @foreach (\App\Models\Role::all() as $role)
-                            <option value="{{ $role->id }}">{{ __($role->name) }}</option>
+                            @can('view', $role)
+                                <option value="{{ $role->id }}">{{ __($role->name) }}</option>
+                            @endcan
                         @endforeach
                     </select>
 

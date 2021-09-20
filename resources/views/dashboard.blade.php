@@ -4,9 +4,12 @@
 
     <div class="py-12 px-6">
         <div>
-            <div class="grid grid-cols-4 mb-4 bg-white border-2 p-4 ">
-                <div class="overflow-hidden">
+            <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 mb-8   ">
+                <div class="overflow-hidden bg-white border-2 p-4 rounded-2xl">
                     <canvas id="myChart" width="400" height="200"></canvas>
+                </div>
+                <div class="overflow-hidden lg:col-span-2 col-span-full bg-white border-2 p-4 rounded-2xl">
+                    <canvas id="reportsChart" width="400" height=""></canvas>
                 </div>
             </div>
             <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8">
@@ -58,10 +61,12 @@
                     </a>
                 @endcan
                 @foreach (\App\Models\OrgProject::all() as $project)
-                    <a href="{{ route('organization_projects.show', $project) }}"
-                        class="bg-[#E5E6E7] py-12 px-4 text-center relative font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px] ">
-                        {{ $project->name }}
-                    </a>
+                    @can('view', $project)
+                        <a href="{{ route('organization_projects.show', $project) }}"
+                            class="bg-[#E5E6E7] py-12 px-4 text-center relative font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px] ">
+                            {{ $project->name }}
+                        </a>
+                    @endcan
                 @endforeach
             </div>
         </div>
@@ -117,6 +122,7 @@
                 integrity="sha256-bC3LCZCwKeehY6T4fFi9VfOU0gztUa+S4cnkIhVPZ5E=" crossorigin="anonymous"></script>
         <script>
             var ctx = document.getElementById('myChart').getContext('2d');
+            var reportsCtx = document.getElementById('reportsChart').getContext('2d');
 
             $.ajax({
                 type: "GET",
@@ -128,7 +134,7 @@
                         data: {
                             labels: Object.keys(response),
                             datasets: [{
-                                label: '# of Votes',
+                                label: '# of projects',
                                 data: Object.values(response),
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 1)',
@@ -137,6 +143,26 @@
                                 ]
                             }]
                         },
+                    });
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: "{{ route('reports_chart') }}",
+                success: function(response) {
+                    console.log(response);
+                    var myChart = new Chart(reportsCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: Object.keys(response),
+                            datasets: [{
+                                label: 'عدد التقارير',
+                                data: Object.values(response),
+                                backgroundColor: [
+                                    '#FCB634',
+                                ]
+                            }]
+                        }
                     });
                 }
             });

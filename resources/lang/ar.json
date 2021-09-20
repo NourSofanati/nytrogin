@@ -55,5 +55,11 @@
     "NO": "لا",
     "Notes": "الملاحظات",
     "Create a new project": "إنشاء مشروع جديد",
-    "Project Category": "نوع المشروع"
+    "Project Category": "نوع المشروع",
+    "New projects": "مشاريع جديدة",
+    "In progress projects": "مشاريع قيد الإنجاز",
+    "Completed projects": "مشاريع منجزة",
+    "Write your notes here": "اكتب ملاحظاتك هنا",
+    "Recommendations": "التوصيات",
+    "Write your recommendations here":"اكتب توصياتك هنا"
 }

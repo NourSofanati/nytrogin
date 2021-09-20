@@ -41,7 +41,7 @@
                     المناطق
                 </p>
 
-                <a href="{{ route('area.create',$orgProject) }}"
+                <a href="{{ route('area.create', $orgProject) }}"
                     class="bg-[#673B8C] py-12 px-4 text-center relative font-bold text-2xl border text-white rounded-[50px]">
                     {{ __('Create an area') }} <span class="material-icons my-auto">add</span>
                 </a>

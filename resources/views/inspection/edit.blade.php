@@ -10,7 +10,7 @@
     @endphp
     <div class="xl:p-12 xl:p-8 p-4">
         <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
-            التفتيش على {{ __($project->category->name) }}
+            التفتيش على {{ __($projectReport->project->category->name) }}
         </div>
         <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
             @csrf
@@ -25,7 +25,7 @@
                     </div>
                     <div class="grid grid-cols-4">
                         <label class="my-auto" for="project_name">
-                            @switch($project->category->name)
+                            @switch($projectReport->project->category->name)
                                 @case('مراكز الترفيه ومدن الملاهي')
                                     {{ __('اسم المركز الترفيهي') }} :
                                 @break

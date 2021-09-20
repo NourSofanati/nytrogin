@@ -69,14 +69,14 @@
                 </span>
                 {{ __('اعدادات حسابي') }}
             </x-jet-nav-link>
-            @can('create', \App\Models\Area::class)
+            {{-- @can('create', \App\Models\Area::class)
                 <x-jet-nav-link href="{{ route('area.index') }}" :active="request()->routeIs('area.index')">
                     <span class="material-icons ml-6">
                         location_on
                     </span>
                     {{ __('المناطق') }}
                 </x-jet-nav-link>
-            @endcan
+            @endcan --}}
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"

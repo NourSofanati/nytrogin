@@ -154,7 +154,17 @@
                 </table>
             </div>
         </form>
+        <div class="mt-3 border-2 bg-white rounded-xl p-8 text-lg">
+            <label for="notes">{{ __('Notes') }}</label>
+            <p>{{ $report->checklist->notes }}</p>
+        </div>
+        <div class="mt-3 border-2 bg-white rounded-xl p-8 text-lg">
+            <label for="recommendations">{{ __('Recommendations') }}</label>
+            <p>{{ $report->checklist->recommendations }}</p>
+        </div>
     </div>
+
+
     <div class="absolute top-0 left-0 right-0 bottom-0 lg:right-[380px] bg-black/20  backdrop-blur-md grid place-content-center place-items-center overflow-hidden hidden"
         id="attachmentsModal">
         <div class="bg-white shadow-xl rounded p-2">

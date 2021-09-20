@@ -50,7 +50,7 @@ class UserController extends Controller
             $otp = rand(10000, 99999);
             $user->otp = $otp;
             $user->save();
-            //$this->otpSMS($otp, $user->phone_number);
+            $this->otpSMS($otp, $user->phone_number);
             Log::info("OTP IS " . $otp);
             return response()->json(array('status' => 'success', 'user_id' => $user->id));
         } else {

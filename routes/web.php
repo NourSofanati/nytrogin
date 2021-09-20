@@ -18,10 +18,12 @@ use App\Models\InspectionMedia;
 use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Models\ProjectReport;
 use App\Models\ReportCheckItem;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,4 +176,24 @@ Route::prefix('charts')->group(function () {
             __('New projects') => $newProjects,
         ]);
     })->name('projects_chart');
+    Route::get('reports_chart', function () {
+        $dates = collect();
+        foreach (range(-6, 0) as $i) {
+            $date = \Carbon\Carbon::now()->addDays($i)->format('Y-m-d');
+            $dates->put($date, 0);
+        }
+        $reports = ProjectReport::where('created_at', '>=', $dates->keys()->first())
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get([
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as "count"')
+            ])->pluck('count', 'date');
+        $dates = $dates->merge($reports);
+        return response()->json($dates);
+    })->name('reports_chart');
+    Route::get('reports_category_chart', function () {
+        $projects = Project::all()->groupBy('category_id')->get([DB::raw('COUNT(*) as "count"')])->pluck('count');
+        return response()->json($projects);
+    })->name('category_chart');
 });

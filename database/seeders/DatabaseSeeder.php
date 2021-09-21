@@ -21,7 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin'
         ]);
         Role::create([
-            'name' => 'procurator'
+            'name' => 'project_manager'
+        ]);
+        Role::create([
+            'name' => 'deputy_project_manager'
         ]);
         Role::create([
             'name' => 'supervisor'
@@ -33,15 +36,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'organization'
         ]);
 
-        Area::create([
-            'name' => 'المنطقة الشمالية و الشرقية',
-        ]);
-        Area::create([
-            'name' => 'المنطقة الوسطى',
-        ]);
-        Area::create([
-            'name' => 'المنطقة الغربية والجنوبية',
-        ]);
 
         User::create([
             'name' => 'عبدالله الحمديان',
@@ -49,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'phone_number' => '966592713358',
             'role_id' => Role::IS_ADMIN
         ]);
         User::create([
@@ -57,22 +52,70 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'phone_number' => '966592713358',
             'role_id' => Role::IS_ADMIN
         ]);
         User::create([
             'name' => 'أحمد الدرويش',
-            'email' => 'procurator@nytrogin.com',
+            'email' => 'projectmanager1@nytrogin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'role_id' => Role::IS_PROCURATOR
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_PROJECT_MANAGER
+        ]);
+        User::create([
+            'name' => 'عبدالله بعلبكي',
+            'email' => 'projectmanager2@nytrogin.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_PROJECT_MANAGER
+        ]);
+        User::create([
+            'name' => 'سمير الأحمد',
+            'email' => 'projectmanager3@nytrogin.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_PROJECT_MANAGER
+        ]);
+        User::create([
+            'name' => 'علاء جواد',
+            'email' => 'deputyprojectmanager1@nytrogin.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_DEPUTY_PROJECT_MANAGER
+        ]);
+        User::create([
+            'name' => 'عمر محمد',
+            'email' => 'deputyprojectmanager2@nytrogin.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_DEPUTY_PROJECT_MANAGER
+        ]);
+        User::create([
+            'name' => 'محمود مظلوم',
+            'email' => 'deputyprojectmanager3@nytrogin.com',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+            'role_id' => Role::IS_DEPUTY_PROJECT_MANAGER
         ]);
         User::create([
             'name' => 'سليمان النصيان',
             'email' => 'supervisor1@nytrogin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
             'role_id' => Role::IS_SUPERVISOR
         ]);
         User::create([
@@ -80,7 +123,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'inspector1@nytrogin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+
             'role_id' => Role::IS_INSPECTOR
         ]);
         User::create([
@@ -88,7 +133,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'inspector2@nytrogin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+
             'role_id' => Role::IS_INSPECTOR
         ]);
         User::create([
@@ -96,7 +143,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'inspector3@nytrogin.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'remember_token' => Str::rando(10),
+            'phone_number' => '966592713358',
+
             'role_id' => Role::IS_INSPECTOR
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\OrganizationProject;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +19,7 @@ class CreateProjectAssignmentsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignIdFor(User::class, 'user_id');
-            $table->foreignIdFor(OrganizationProject::class, 'project_id');
+            $table->foreignIdFor(Project::class, 'project_id');
             $table->text('assigned_as');
         });
     }

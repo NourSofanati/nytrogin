@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -19,6 +20,7 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id'
+        'name', 'email', 'password', 'role_id', 'specialization', 'phone_number', 'area_id'
     ];
 
     /**
@@ -69,8 +71,10 @@ class User extends Authenticatable
         return $this->hasMany(ProjectAssignment::class, 'user_id');
     }
 
-    public function assigned_to(OrganizationProject $project)
+    public function orgProjects()
     {
-        return $this->assignments()->where('project_id', $project->id)->count() > 0;
+        if ($this->role_id == Role::IS_DEPUTY_PROJECT_MANAGER)
+            return $this->hasMany(OrgProject::class, 'dpm_id');
+        return $this->hasMany(OrgProject::class, 'pm_id');
     }
 }

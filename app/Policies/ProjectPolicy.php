@@ -33,7 +33,7 @@ class ProjectPolicy
      */
     public function view(User $user, OrganizationProject $organizationProject)
     {
-        if ($user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROCURATOR) {
+        if ($user->role_id == Role::IS_ADMIN || $user->role_id == Role::IS_PROJECT_MANAGER || $user->role_id == Role::IS_DEPUTY_PROJECT_MANAGER) {
             return true;
         }
         if ($organizationProject->assignments->where('user_id', $user->id)->count()) {

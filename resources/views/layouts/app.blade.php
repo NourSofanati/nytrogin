@@ -37,25 +37,23 @@
             <header class="bg-white border-b-2 border-[#E9EAEB] ">
                 <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-end">
-                        <div class="flex justify-between w-full md:w-auto">
-                            <a href="#test" id="show_sidebar">
-                                <span class="material-icons text-gray-400 px-4 py-2 my-auto hidden sm:block">
+                        <div class="flex justify-between md:w-auto">
+                            <a href="#test" id="show_sidebar" class="lg:hidden">
+                                <span class="material-icons text-gray-400 px-4 py-2 my-auto ">
                                     menu
                                 </span>
                             </a>
-                            <div class="flex">
-                                <a href="">
-                                    <span class="material-icons text-gray-400 my-auto px-4 py-2">
-                                        settings
-                                    </span>
-                                </a>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="material-icons text-gray-400 my-auto px-4 py-2">
-                                        logout
-                                    </button>
-                                </form>
-                            </div>
+                            <button class="flex text-gray-400  px-4 py-2" onclick="window.history.back();">
+                                <p class="ml-4 font-semibold">
+                                    الرجوع
+                                </p>
+
+                                <span class="material-icons  my-auto">
+                                    keyboard_backspace
+                                </span>
+
+
+                            </button>
                         </div>
                     </div>
                     {{ $header }}
@@ -76,7 +74,6 @@
         let progress = null;
         $('#search').on('propertychange input', function(e) {
             var valueChanged = false;
-
             if (e.type == 'propertychange') {
                 valueChanged = e.originalEvent.propertyName == 'value';
             } else {

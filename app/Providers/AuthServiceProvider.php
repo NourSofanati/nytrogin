@@ -3,11 +3,16 @@
 namespace App\Providers;
 
 use App\Models\OrganizationProject;
+use App\Models\OrgProject;
 use App\Models\ProjectAssignment;
 use App\Models\ProjectChecklist;
+use App\Models\ProjectInspection;
+use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use App\Policies\ChecklistPolicy;
+use App\Policies\InspectionPolicy;
+use App\Policies\OrgProjectPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\TeamPolicy;
 
@@ -24,7 +29,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Team::class => TeamPolicy::class,
         OrganizationProject::class => ProjectPolicy::class,
-        ProjectChecklist::class => ChecklistPolicy::class,
+        ProjectInspection::class => InspectionPolicy::class,
+        OrgProject::class => OrgProjectPolicy::class,
+        Role::class => RolePolicy::class
     ];
 
     /**
@@ -35,8 +42,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Gate::define('see', function (User $user, User $other) {
-            return $user->role_id <= $other->role_id;
-        });
     }
 }

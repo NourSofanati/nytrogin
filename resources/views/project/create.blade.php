@@ -17,7 +17,7 @@
 
                 </div>
                 <div class="container p-2 w-full lg:w-1/2 mx-auto text-center py-4 text-[#7056A1]">
-                    <form action="{{ route('projects.store') }}" method="post" class="relative ">
+                    <form action="{{ route('projects.store') }}" method="post" class="relative">
                         @csrf
                         <div>
                             <label for="org_id" class="block text-gray-700 text-lg mt-5 font-bold mb-2">اختر
@@ -45,15 +45,16 @@
                                 class="shadow appearance-none border-2 border-[#7056A1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 type="datetime-local" name="deadline" id="deadline">
                         </div>
-                        <div class="">
-                            <label for="description" class="block text-gray-700 text-lg mt-5 font-bold mb-2">تعليقات ووصف
+                        <div class="___class_+?14___">
+                            <label for="description" class="block text-gray-700 text-lg mt-5 font-bold mb-2">تعليقات
+                                ووصف
                                 للمشروع</label>
                             <textarea
                                 class="shadow appearance-none border-2 border-[#7056A1] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                name="description" id="description" cols="30" rows="10" ></textarea>
+                                name="description" id="description" cols="30" rows="10"></textarea>
                         </div>
-                        <input type="hidden" name="status" value="pending_1" required >
-                        <x-jet-button>التالي</x-jet-button>
+                        <input type="hidden" name="status" value="pending_1" required>
+                        <x-jet-button type="submit">التالي</x-jet-button>
                     </form>
                 </div>
             </div>

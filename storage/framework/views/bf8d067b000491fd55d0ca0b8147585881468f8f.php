@@ -29,14 +29,8 @@
     <div class="flex flex-col w-full gap-1 p-4 justify-center items-center text-center">
         <div
             class="rounded-full h-[120px] shadow-xl w-[120px] border-2 border-[#71579A] grid place-items-center place-content-center text-4xl font-black text-[#71579A]">
-            <div
-                class="rounded-full h-[75px] w-[75px] bg-[#F6F8FC] shadow grid place-items-center place-content-center text-3xl font-black text-[#71579A]">
-                <?php
-                    $words = explode(' ', auth()->user()->name);
-                ?>
-                <?php echo e(Str::substr($words[0], 0, 1)); ?>
-
-            </div>
+            <img class="rounded-full h-[75px] w-[75px] bg-[#F6F8FC] shadow grid place-items-center place-content-center text-3xl font-black text-[#71579A]"
+                src="<?php echo e(auth()->user()->profile_photo_url); ?>" />
         </div>
 
         <div class="text-2xl font-bold text-[#71579A] mt-5"><?php echo e(auth()->user()->name); ?> </div>

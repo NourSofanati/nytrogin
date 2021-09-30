@@ -101,7 +101,7 @@
                 @endcan
             @empty
             @endforelse
-            @if (\App\Models\Area::all()->count() > $orgProject->areas->count())
+            @if (\App\Models\AreaList::all()->count() > $orgProject->areas->count())
                 <div id="showAddArea"
                     class="border-4 p-5 border-dashed max-h-[150px] min-h-[150px] rounded cursor-pointer bg-[#F0F0F7] flex justify-center transition-all duration-150 hover:shadow-xl hover:scale-105">
                     <span class="my-auto mx-auto text-green-500 font-bold text-2xl flex">

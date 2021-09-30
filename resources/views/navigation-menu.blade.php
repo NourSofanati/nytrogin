@@ -30,7 +30,7 @@
         <div
             class="rounded-full h-[120px] shadow-xl w-[120px] border-2 border-[#71579A] grid place-items-center place-content-center text-4xl font-black text-[#71579A]">
             <img class="rounded-full h-[75px] w-[75px] bg-[#F6F8FC] shadow grid place-items-center place-content-center text-3xl font-black text-[#71579A]"
-                src="auth()->user()->profile_photo_url" />
+                src="{{auth()->user()->profile_photo_url}}" />
         </div>
 
         <div class="text-2xl font-bold text-[#71579A] mt-5">{{ auth()->user()->name }} </div>

@@ -199,7 +199,7 @@
     @push('custom-scripts')
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script async
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKt6rV3HX9odJ6RkStewHB_MU2zhS8oMA&libraries=places&callback=initMap&language=ar&region=SA">
+                src="https://maps.googleapis.com/maps/api/js?key={{config('app.mapsapi')}}&libraries=places&callback=initMap&language=ar&region=SA">
         </script>
         <script>
             $('[data-attachmentShow]').click(function(e) {

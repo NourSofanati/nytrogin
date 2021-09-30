@@ -28,6 +28,8 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+    'mapsapi' => env('MAPS_API'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

@@ -4,16 +4,13 @@ namespace App\Providers;
 
 use App\Models\OrganizationProject;
 use App\Models\OrgProject;
-use App\Models\ProjectAssignment;
-use App\Models\ProjectChecklist;
 use App\Models\ProjectInspection;
 use App\Models\Role;
 use App\Models\Team;
-use App\Models\User;
-use App\Policies\ChecklistPolicy;
 use App\Policies\InspectionPolicy;
 use App\Policies\OrgProjectPolicy;
 use App\Policies\ProjectPolicy;
+use App\Policies\RolePolicy;
 use App\Policies\TeamPolicy;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -31,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         OrganizationProject::class => ProjectPolicy::class,
         ProjectInspection::class => InspectionPolicy::class,
         OrgProject::class => OrgProjectPolicy::class,
-        Role::class => RolePolicy::class
+        Role::class => RolePolicy::class,
     ];
 
     /**

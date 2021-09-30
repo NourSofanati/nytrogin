@@ -36,7 +36,7 @@ class OrgProjectPolicy
         if ($user->role->name == 'inspector' || $user->role->name == 'supervisor') {
             foreach ($user->assignments as $assignments) {
                 $project = Project::find($assignments->project_id);
-                if ($project->org_project_id === $orgProject->id) {
+                if ($project->org_project_id == $orgProject->id) {
                     return true;
                 }
             }
@@ -52,7 +52,7 @@ class OrgProjectPolicy
      */
     public function create(User $user)
     {
-        return $user->role->name == 'admin' || $user->role->name == 'project_manager';
+        return $user->role->name == 'admin';
     }
 
     /**

@@ -15,7 +15,7 @@ class ProjectReport extends Model
     // $table->date('licence_expiration')->nullable();
     // $table->text('commercial_license_id')->nullable();
     protected $fillable = [
-        'user_id', 'project_id', 'license_id', 'report_date', 'report_time', 'licence_expiration', 'commercial_license_id'
+        'user_id', 'project_id', 'license_id', 'report_date', 'report_time', 'licence_expiration', 'commercial_license_id','location','place_json'
     ];
     public function project()
     {

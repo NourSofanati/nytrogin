@@ -37,7 +37,7 @@
                     <form action="{{ route('create_from_area') }}" class="text-indigo-600" method="get">
                         <input type="hidden" name="area_id" value="{{ $area->id }}">
                         <button type="submit">
-                            قم بإضافة مدينة
+                            إضافة مدينة
                         </button>
                     </form>
                 </div>

@@ -79,7 +79,7 @@ class AreaController extends Controller
         $area->update($request->all());
         $area->save();
         toast('تم الحفظ', 'success');
-        return redirect()->back();
+        return redirect()->route('area.show',$area);
     }
 
     /**

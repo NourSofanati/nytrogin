@@ -28,27 +28,9 @@
                             إضافة نوع جديد
                         </button>
                     </div>
-
                     <input type="hidden" name="project_id" required value="{{ $project->id }}" />
                     <input type="hidden" name="user_id" required value="{{ auth()->user()->id }}" />
-
-                    <label for="comments" class="mt-5 block">الملاحظات</label>
-                    <textarea name="comments" id="comments" cols="30" rows="10"
-                        class="block border-gray-400 bg-gray-100 w-full"></textarea>
                     @csrf
-                    {{-- <label class="font-extrabold mt-10 text-[#673B8C] text-xl block" for="file">إضافة مرفقات</label>
-                    <button
-                        class="bg-[#e5e6e7] text-[#673B8C] flex flex-col  items-center justify-center p-8 rounded-3xl border border-gray-400 my-4"
-                        id="upload_files">
-                        <span class="material-icons md-48">
-                            add
-                        </span>
-                    </button>
-                    <input id="file" type="file" name="files[]" class="hidden" accept="image/*, video/*"
-                        multiple />
-                    <div class="flex gap-4" id="preview">
-
-                    </div> --}}
                     <button type="submit"
                         class="bg-[#FCB634] px-4 py-2 rounded block text-[#673B8C] border-[#673B8C] border font-bold mt-5">{{ __('Save') }}
                     </button>

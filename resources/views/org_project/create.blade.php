@@ -12,11 +12,6 @@
                             class="border-none px-4 py-2  focus:outline-none active:border-none w-full h-full bg-transparent "
                             placeholder="اسم المشروع">
                     </div>
-                    <div class="bg-[#E5E6E7] mt-3 rounded-xl shadow">
-                        <textarea name="notes" id="notes" cols="30" rows="3"
-                            class="border-none px-4 py-2  focus:outline-none active:border-none w-full h-full bg-transparent "
-                            placeholder="وصف المشروع"></textarea>
-                    </div>
                     @if (auth()->user()->role->name === 'admin')
                         <div class="px-4 py-4 bg-[#E5E6E7] rounded-xl mt-3 shadow">
                             <label for="pm_id" class="block mb-3">

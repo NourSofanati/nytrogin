@@ -8,78 +8,94 @@
     @php
         $allCount = 0;
     @endphp
-    <div class="xl:p-12 xl:p-8 p-4">
-        <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
-            التفتيش على {{ __($project->category->name) }}
-        </div>
+    <div class="p-6">
+
         <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
             @csrf
-            {{-- 'user_id', 'project_id', 'license_id', 'report_date', 'report_time', 'licence_expiration', 'commercial_license_id' --}}
-            <div class="mt-3 border-2 bg-white rounded-xl py-4 px-2 text-lg">
-                <div class=" flex flex-col gap-4 w-full xl:w-1/2">
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="user_name">{{ __('Inspector Name') }}</label>
-                        <input type="hidden" name="user_id" id="user_id" value="{{ auth()->id() }}" />
-                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
-                            name="user_name" id="user_name" value="{{ auth()->user()->name }}" disabled />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="project_name">
-                            @switch($project->category->name)
-                                @case('مراكز الترفيه ومدن الملاهي')
-                                    {{ __('اسم المركز الترفيهي') }} :
-                                @break
-                                @case('الفعاليات الترفيهية')
-                                    {{ __('اسم ومكان الفعالية') }} :
-                                @break
-                                @case('العروض الحية في المطاعم والمقاهي')
-                                    {{ __('اسم المطعم/المقهى') }} :
-                                @break
-                                @default
+            <div class="border-2 my-5 border-dashed p-5">
+                <details open>
+                    <summary class="flex mb-5 cursor-pointer">
+                        <div class="justify-start">
+                            <h1
+                                class="text-3xl text-gray-700 border-b-2 pb-2 border-dashed  border-gray-400 pl-[3.2rem] mr-2">
+                                التفاصيل</h1>
+                        </div>
+                    </summary>
 
-                            @endswitch
-                        </label>
-                        <input type="hidden" name="project_id" id="project_id" value="{{ $project->id }}" />
-                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
-                            name="project_name" id="project_name" value="{{ $project->name }}" disabled />
+                    <div class=" flex flex-col gap-4 w-full xl:w-1/2">
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="user_name">{{ __('Inspector Name') }}</label>
+                            <input type="hidden" name="user_id" id="user_id" value="{{ auth()->id() }}" />
+                            <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                                name="user_name" id="user_name" value="{{ auth()->user()->name }}" disabled />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="project_name">
+                                @switch($project->category->name)
+                                    @case('مراكز الترفيه ومدن الملاهي')
+                                        {{ __('اسم المركز الترفيهي') }} :
+                                    @break
+                                    @case('الفعاليات الترفيهية')
+                                        {{ __('اسم ومكان الفعالية') }} :
+                                    @break
+                                    @case('العروض الحية في المطاعم والمقاهي')
+                                        {{ __('اسم المطعم/المقهى') }} :
+                                    @break
+                                    @default
+
+                                @endswitch
+                            </label>
+                            <input type="hidden" name="project_id" id="project_id" value="{{ $project->id }}" />
+                            <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                                name="project_name" id="project_name" value="{{ $project->name }}" disabled />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="city_name">{{ __('City / State') }}</label>
+                            <input type="hidden" name="city_id" id="city_id" value="{{ $project->city->id }}" />
+                            <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
+                                name="city_name" id="city_name"
+                                value="{{ $project->city->name . ' / ' . $project->city->area->area->name }}"
+                                disabled />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="location">{{ __('Location') }}</label>
+                            <input class=" col-span-3 border-gray-300 bg-gray-50 text-gray-600 rounded-xl" type="text"
+                                name="location" id="location" required>
+                            <input type="hidden" name="place_json" id="place_json">
+                        </div>
+                        <div id="map" class="col-span-full h-[250px] hover:shadow-xl rounded-xl transition-all duration-150 hover:scale-105"></div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="report_date">{{ __('Inspection Date') }}</label>
+                            <input type="date" name="report_date" id="report_date" required
+                                class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl text-right" />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="report_time">{{ __('Inspection Time') }}</label>
+                            <input type="time" name="report_time" id="report_time" required
+                                class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl text-right" />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto" for="license_id">{{ __('Permit ID') }}</label>
+                            <input type="text" name="license_id" id="license_id"
+                                class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto"
+                                for="license_expiration">{{ __('Permit Expiration Date') }}</label>
+                            <input type="date" name="license_expiration" id="license_expiration"
+                                class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl text-right" />
+                        </div>
+                        <div class="grid grid-cols-4">
+                            <label class="my-auto"
+                                for="commercial_license_id">{{ __('Commercial license ID') }}</label>
+                            <input type="text" name="commercial_license_id" id="commercial_license_id"
+                                class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
+                        </div>
                     </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="city_name">{{ __('City / State') }}</label>
-                        <input type="hidden" name="city_id" id="city_id" value="{{ $project->city->id }}" />
-                        <input class=" col-span-3 border-gray-300 bg-gray-100 text-gray-600 rounded-xl" type="text"
-                            name="city_name" id="city_name"
-                            value="{{ $project->city->name . ' / ' . $project->city->area->name }}" disabled />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="report_date">{{ __('Inspection Date') }}</label>
-                        <input type="date" name="report_date" id="report_date" required
-                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="report_time">{{ __('Inspection Time') }}</label>
-                        <input type="time" name="report_time" id="report_time" required
-                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto" for="license_id">{{ __('Permit ID') }}</label>
-                        <input type="text" name="license_id" id="license_id"
-                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto"
-                            for="license_expiration">{{ __('Permit Expiration Date') }}</label>
-                        <input type="date" name="license_expiration" id="license_expiration"
-                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
-                    </div>
-                    <div class="grid grid-cols-4">
-                        <label class="my-auto"
-                            for="commercial_license_id">{{ __('Commercial license ID') }}</label>
-                        <input type="text" name="commercial_license_id" id="commercial_license_id"
-                            class=" col-span-3 border-gray-300 bg-gray-50 rounded-xl" />
-                    </div>
-                </div>
+
+                </details>
             </div>
-            <div class="mt-3 border-2 bg-white rounded-xl p-8 text-lg ">
+            <div class="mt-3 border-2 border-dashed p-8 text-lg ">
 
                 <table class="min-w-full">
                     <thead>
@@ -98,10 +114,7 @@
                                     class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
                                     <textarea name="row[{{ $index }}][inspection]" id=""
                                         class="border-none w-full h-full" rows="3">{{ trim($value) }}</textarea>
-                                    <div class="absolute top-0 -right-7 bottom-0 text-xl flex"><span
-                                            class="material-icons my-auto bg-gray-300 rounded-full cursor-pointer hover:bg-red-500 text-white"
-                                            onclick="confirm('{{ 'Are you sure you want to delete this item?' }}') && $('[data-index={{ $index }}]').remove()">close</span>
-                                    </div>
+
                                 </td>
                                 <td
                                     class="w-full xl:w-auto p-3 text-gray-800 text-center border border-b block xl:table-cell relative xl:static">
@@ -135,7 +148,7 @@
                             @endphp
                         @endforeach
                     </tbody>
-                    <tfoot>
+                    {{-- <tfoot>
                         <tr>
                             <td colspan="4">
                                 <button
@@ -146,7 +159,7 @@
                                 </button>
                             </td>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
             <div class="mt-3 border-2 bg-white rounded-xl p-8 text-lg">
@@ -167,13 +180,14 @@
         </form>
     </div>
 
-
-
     @push('custom-scripts')
+
+        <script async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKt6rV3HX9odJ6RkStewHB_MU2zhS8oMA&libraries=places&callback=initMap&language=ar&region=SA">
+        </script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            //import Swal from 'sweetalert2'
             $('input[type=file]').change(function(e) {
                 e.preventDefault();
                 $('#filecount-' + this.dataset.index).html('تم تحديد ' + this.files.length + ' ملفات');
@@ -260,6 +274,59 @@
                 e.preventDefault();
                 $('#addNewTypeModal').removeClass('hidden');
             });
+
+            let selectedLocation = {
+                lat: 23.794850198707053,
+                lng: 45.14557369331874
+            };
+
+            function initMap() {
+                const input = document.getElementById("location");
+                const options = {
+                    componentRestrictions: {
+                        country: "sa"
+                    },
+                    fields: ["address_components", "geometry", "icon", "name"],
+                    strictBounds: false,
+                };
+                const autocomplete = new google.maps.places.Autocomplete(input, options);
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 4,
+                    center: {
+                        lat: 23.794850198707053,
+                        lng: 45.14557369331874
+                    },
+                });
+                const marker = new google.maps.Marker({
+                    map
+                });
+                autocomplete.addListener("place_changed", () => {
+                    // infowindow.close();
+                    marker.setVisible(false);
+                    const place = autocomplete.getPlace();
+                    if (!place.geometry || !place.geometry.location) {
+                        // User entered the name of a Place that was not suggested and
+                        // pressed the Enter key, or the Place Details request failed.
+                        window.alert("No details available for input: '" + place.name + "'");
+                        return;
+                    }
+
+                    // If the place has a geometry, then present it on a map.
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);
+                    }
+                    $('#place_json').val(JSON.stringify(place));
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
+                    // infowindowContent.children["place-name"].textContent = place.name;
+                    // infowindowContent.children["place-address"].textContent =
+                    //     place.formatted_address;
+                    // infowindow.open(map, marker);
+                });
+            }
         </script>
     @endpush
 </x-app-layout>

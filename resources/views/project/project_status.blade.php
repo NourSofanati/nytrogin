@@ -1,5 +1,5 @@
 <div id="status"
-    class="bg-white  rounded-md p-6 grid grid-cols-1 gap-6 border-2 col-span-full border-[#E9EAEB] place-items-center">
+    class="bg-white rounded-md p-6 grid grid-cols-1 gap-6 border-2 border-[#E9EAEB] place-items-center">
     <h1 class="text-2xl">
         حالة المشروع:
     </h1>

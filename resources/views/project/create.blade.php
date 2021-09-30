@@ -13,8 +13,6 @@
                     <div class="h-12 w-12 rounded-full z-0 bg-[#7056A1] flex justify-center">
                         <p class="my-auto text-white font-extrabold">1</p>
                     </div>
-                    {{-- <div class="h-12 w-12 rounded-full bg-[#7056A1]"></div> --}}
-
                 </div>
                 <div class="container p-2 w-full lg:w-1/2 mx-auto text-center py-4 text-[#7056A1]">
                     <form action="{{ route('projects.store') }}" method="post" class="relative">

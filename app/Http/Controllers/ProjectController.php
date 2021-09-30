@@ -129,6 +129,7 @@ class ProjectController extends Controller
             ]);
         }
         $procurators = User::all()->where('role_id', Role::IS_DEPUTY_PROJECT_MANAGER);
+
         foreach ($procurators as $admin) {
             Notification::create([
                 'user_id' => $admin->id,

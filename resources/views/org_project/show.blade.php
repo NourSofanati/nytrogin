@@ -2,170 +2,126 @@
     <x-slot name="header">
     </x-slot>
 
-    <div class="py-12 px-6">
-        <div>
-            <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8">
-                <div
-                    class="col-span-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 border-2  p-6 rounded-3xl bg-white">
-                    <p class=" text-4xl font-bold text-[#673B8C] text-center col-span-full">
-                        {{ $orgProject->name }}
-                    </p>
-                    <div class="col-span-full text-center flex justify-center">
-                        <div class="h-12 border-l-2 border-[#FCB634] relative">
-                        </div>
-                    </div>
-                    <p class="text-3xl font-bold text-[#673B8C] text-center col-span-full">
-                        المشاريع
-                    </p>
+    <div class="py-6 px-6">
 
-                    <div
-                        class="bg-[#E5E6E7] border-[#673B8C] py-12 px-4 col-span-full border rounded-[50px] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-                        <div class="lg:border-l-2 border-gray-400  pb-7 text-center cursor-pointer px-4 h-full "
-                            id="showCompletedProjects">
-                            <p class="mb-4 font-extrabold text-2xl text-[#673B8C]"> المنجزة</p>
-                            <div class="font-bold text-[#FCB634] text-6xl">{{ $completedProjects->count() }}</div>
-                        </div>
-                        <div class="lg:border-l-2 border-gray-400 pb-7 text-center cursor-pointer px-4 h-full"
-                            id="showInProgressProjects">
-                            <p class="mb-4 font-extrabold text-2xl text-[#673B8C]"> قيد الإنجاز</p>
-                            <div class="font-bold text-[#FCB634] text-6xl">{{ $inProgressProjects->count() }}</div>
-                        </div>
-                        <div class=" border-gray-400 pb-7 text-center px-4 h-full  cursor-pointer" id="showNewProjects">
-                            <p class="mb-4 font-extrabold text-2xl text-[#673B8C]"> الجديدة</p>
-                            <div class="font-bold text-[#FCB634] text-6xl">{{ $newProjects->count() }}</div>
-                        </div>
-                    </div>
+        <div class="flex w-full mb-10 font-bold">
+            <h1 class="text-3xl text-[#673B8c] drop-shadow-lg">{{ $orgProject->name }}
+                @if (auth()->user()->role->name == 'admin')
+                    <a href="{{ route('organization_projects.edit', $orgProject) }}"><span
+                            class="material-icons">edit</span></a>
+                @endif
+            </h1>
+            <hr class="flex-grow my-auto mr-5 border-[#FCB634] border-2 shadow-xl">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full gap-10">
+            <div class="bg-[#683b8c] px-5 py-8 text-white text-2xl rounded-lg border-[#FCB634] shadow-lg hover:scale-105 hover:shadow-2xl transition duration-150 cursor-pointer"
+                id="showNewProjects">
+                <div class="flex">
+                    <span class="material-icons my-auto ml-2 text-[#FCB634] scale-110 ">post_add</span>
+                    <span class="font-bold my-auto">المهام الجديدة : {{ $newProjects->count() }}</span>
                 </div>
+                <div class="flex">
 
-                <p class="text-3xl font-bold text-[#673B8C] text-center col-span-full">
-                    المناطق
-                </p>
+                </div>
+            </div>
+            <div class="bg-[#683b8c] px-5 py-8 text-white text-2xl rounded-lg border-[#FCB634] shadow-lg hover:scale-105 hover:shadow-2xl transition duration-150 cursor-pointer"
+                id="showInProgressProjects">
+                <div class="flex">
+                    <span class="material-icons my-auto ml-2 text-[#FCB634] scale-110 ">alarm</span>
+                    <span class="font-bold">مهام قيد الإنجاز : {{ $inProgressProjects->count() }}</span>
+                </div>
+                <div class="flex">
 
-                <a href="{{ route('area.create', $orgProject) }}"
-                    class="bg-[#673B8C] py-12 px-4 text-center relative font-bold text-2xl border text-white rounded-[50px]">
-                    {{ __('Create an area') }} <span class="material-icons my-auto">add</span>
-                </a>
-                @forelse ($orgProject->areas as $area)
-                    @can('view', $area)
-                        <a href="{{ route('area.show', $area) }}"
-                            class="bg-[#E5E6E7] py-12 px-4 text-center relative font-bold text-2xl border border-[#673B8C] text-[#673B8C] rounded-[50px]">
-                            {{ $area->name }}
-                            @if ($area->projects->where('status', '!=', 'done_5')->count() > 0)
+                </div>
+            </div>
+            <div class="bg-[#683b8c] px-5 py-8 text-white text-2xl rounded-lg border-[#FCB634] shadow-lg hover:scale-105 hover:shadow-2xl transition duration-150 cursor-pointer"
+                id="showCompletedProjects">
+                <div class="flex">
+                    <span class="material-icons my-auto ml-2 text-[#FCB634] scale-110 ">verified</span>
+                    <span class="font-bold">المهام المنجزة : {{ $completedProjects->count() }}</span>
+                </div>
+                <div class="flex">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 flex-col mt-8  text-xl font-bold">
+            <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
+                <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
+                <span>مدير المشروع: {{ $orgProject->manager->name }}</span>
+                @if (auth()->user()->role->name == 'admin')
+                    ,&nbsp;<a href=""
+                        class="text-green-500 hover:text-green-600 hover:drop-shadow-xl transition-all duration-100 ">إعادة
+                        تعيين مدير مشروع</a>
+                @endif
+            </div>
+            <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
+                @if ($orgProject->deputyManager)
+                    <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
+                    <span>نائب مدير المشروع: {{ $orgProject->deputyManager->name }}</span>
+                    @if (auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id)
+                        &nbsp;, <span id="showAssignDeputy"
+                            class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">إعادة
+                            تعيين
+                            نائب مدير مشروع</span>
+                    @endif
+                @else
+                    <span class="material-icons text-[#ff611d] my-auto ml-2">warning</span>
+                    <span>لا يوجد نائب مدير للمشروع
+                        @if (auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id)
+                            , <span id="showAssignDeputy"
+                                class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">تعيين
+                                نائب مدير مشروع</span>
+                        @endif
+                    </span>
+                @endif
+            </div>
+        </div>
+        <hr class="my-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full gap-10">
+            @forelse ($orgProject->areas as $area)
+                @can('view', $area)
+                    <a href="{{ route('area.show', $area) }}"
+                        class="p-5 relative border-4 max-h-[150px] min-h-[150px] rounded cursor-pointer bg-[#F0F0F7] flex justify-center hover:scale-105 hover:shadow-2xl transition duration-150">
+                        <span class="my-auto mx-auto text-gray-800 font-bold text-2xl flex">
+                            <span>{{ $area->area->name }}</span>
+                        </span>
+                        @if ($area->projects->where('status', '!=', 'done_5')->count() > 0)
+                            <span
+                                class="absolute -top-5 -left-5 rounded-full bg-[#673B8c] text-white w-10 h-10 flex justify-center text-center">
+                                <span class="my-auto z-10"
+                                    tooltip="عدد المهام الجديدة">{{ $area->projects->where('status', '!=', 'done_5')->count() }}</span>
                                 <span
-                                    class="absolute top-0 left-0 rounded-full bg-[#673B8c] text-white w-10 h-10 flex justify-center text-center">
-                                    <span
-                                        class="my-auto">{{ $area->projects->where('status', '!=', 'done_5')->count() }}</span>
-                                </span>
-                            @endif
-                        </a>
-                    @endcan
-                @empty
-
-                @endforelse
-            </div>
+                                    class="bg-[#673B8C] rounded-full animate-ping w-2/3 h-2/3 my-auto mx-auto top-0 bottom-0 left-0 right-0 absolute z-0"></span>
+                            </span>
+                        @endif
+                    </a>
+                @endcan
+            @empty
+            @endforelse
+            @if (\App\Models\Area::all()->count() > $orgProject->areas->count())
+                <div id="showAddArea"
+                    class="border-4 p-5 border-dashed max-h-[150px] min-h-[150px] rounded cursor-pointer bg-[#F0F0F7] flex justify-center transition-all duration-150 hover:shadow-xl hover:scale-105">
+                    <span class="my-auto mx-auto text-green-500 font-bold text-2xl flex">
+                        <span class="material-icons my-auto scale-110">add</span>
+                        <span>إضافة منطقة</span>
+                    </span>
+                </div>
+            @endif
         </div>
     </div>
-    <div class="absolute top-0 left-0 right-0 bottom-0 lg:right-[380px] bg-black/20  backdrop-blur-md grid place-content-center place-items-center overflow-hidden hidden"
-        id="projectsModal">
-        <div class="bg-white shadow-xl rounded p-2">
+    @include('org_project.modals.projectsModals')
+    @include('org_project.modals.assignDeputyModal')
+    @include('org_project.modals.addArea')
 
-            <div class="py-4 px-8 ">
-                <div class="flex justify-between">
-                    <h1 class="text-xl font-bold text-[#673B8c] my-auto tracking-tight" id="modalTitle">
-                        المشاريع الجديدة
-                    </h1>
-                    <div id="exit_button"
-                        class="text-[#673B8c] my-auto text-3xl cursor-pointer hover:text-red-500 transition duration-75">
-                        &times;</div>
-                </div>
-                <div class="flex flex-col gap-4 mt-5 max-h-[500px] overflow-y-auto">
-
-                    @foreach ($newProjects as $item)
-                        <a class="w-full flex justify-between py-4 px-8 gap-20 font-medium text-lg rounded-full bg-[#E8E3F0] hover:bg-[#683b8c3d] transition duration-75"
-                            href="{{ route('projects.show', $item) }}" data-state="new">
-                            <span>{{ $item->name }}</span>
-                            <span>موعد التسليم:
-                                {{ \Carbon\Carbon::parse($item->deadline)->diffForHumans() }}</span>
-                        </a>
-                    @endforeach
-
-                    @foreach ($completedProjects as $item)
-                        <a class="w-full flex justify-between py-4 px-8 gap-20 font-medium text-lg rounded-full bg-[#E8E3F0] hover:bg-[#683b8c3d] transition duration-75"
-                            href="{{ route('projects.show', $item) }}" data-state="completed">
-                            <span>{{ $item->name }}</span>
-                            <span>موعد التسليم:
-                                {{ \Carbon\Carbon::parse($item->deadline)->diffForHumans() }}</span>
-                        </a>
-                    @endforeach
-
-                    @foreach ($inProgressProjects as $item)
-                        <a class="w-full flex justify-between py-4 px-8 gap-20 font-medium text-lg rounded-full bg-[#E8E3F0] hover:bg-[#683b8c3d] transition duration-75"
-                            href="{{ route('projects.show', $item) }}" data-state="inProgress">
-                            <span>{{ $item->name }}</span>
-                            <span>موعد التسليم:
-                                {{ \Carbon\Carbon::parse($item->deadline)->diffForHumans() }}</span>
-                        </a>
-                    @endforeach
-
-                </div>
-            </div>
-        </div>
-    </div>
     @push('custom-scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"
-                integrity="sha256-bC3LCZCwKeehY6T4fFi9VfOU0gztUa+S4cnkIhVPZ5E=" crossorigin="anonymous"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"
+                integrity="sha256-bC3LCZCwKeehY6T4fFi9VfOU0gztUa+S4cnkIhVPZ5E=" crossorigin="anonymous"></script> --}}
         <script>
-            $('#showNewProjects').click(function() {
-                $('#modalTitle').text('المشاريع الجديدة');
-                $('[data-state]').addClass('hidden');
-                $('[data-state=\'new\']').removeClass('hidden');
-                $('#projectsModal').removeClass('hidden');
-            })
-            $('#showInProgressProjects').click(function() {
-                $('#modalTitle').text('المشاريع قيد الإنجاز');
-                $('[data-state]').addClass('hidden');
-                $('[data-state=\'inProgress\']').removeClass('hidden');
-                $('#projectsModal').removeClass('hidden');
-            })
-            $('#showCompletedProjects').click(function() {
-                $('#modalTitle').text('المشاريع المنجزة');
-                $('[data-state]').addClass('hidden');
-                $('[data-state=\'completed\']').removeClass('hidden');
-                $('#projectsModal').removeClass('hidden');
-            })
-            $('#exit_button').click(function(e) {
-                e.preventDefault();
-                $('#projectsModal').addClass('hidden');
-            });
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-            });
-        </script>
 
+
+        </script>
     @endpush
 </x-app-layout>

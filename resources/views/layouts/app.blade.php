@@ -21,9 +21,11 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
 </head>
 
-<body class="font-sans antialiased h-screen flex">
+<body class="font-sans subpixel-antialiased h-screen flex">
     @include('sweetalert::alert')
     <div class="hidden lg:block bg-[#E5E6E7]" id="sidebar">
         @include('navigation-menu')

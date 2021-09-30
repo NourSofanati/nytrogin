@@ -1,0 +1,4 @@
+[09-Sep-2021 20:09:54 UTC] PHP Warning:  require(/home/o2dr1diqcsig/public_html/vendor/autoload.php): failed to open stream: No such file or directory in /home/o2dr1diqcsig/public_html/artisan on line 18
+[09-Sep-2021 20:09:54 UTC] PHP Fatal error:  require(): Failed opening required '/home/o2dr1diqcsig/public_html/vendor/autoload.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/o2dr1diqcsig/public_html/artisan on line 18
+[09-Sep-2021 20:10:08 UTC] PHP Warning:  require(/home/o2dr1diqcsig/public_html/vendor/autoload.php): failed to open stream: No such file or directory in /home/o2dr1diqcsig/public_html/artisan on line 18
+[09-Sep-2021 20:10:08 UTC] PHP Fatal error:  require(): Failed opening required '/home/o2dr1diqcsig/public_html/vendor/autoload.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/o2dr1diqcsig/public_html/artisan on line 18

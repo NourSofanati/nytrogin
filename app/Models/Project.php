@@ -11,6 +11,12 @@ class Project extends Model
     protected $fillable = [
         'name', 'description', 'city_id', 'comments', 'status', 'deadline', 'org_project_id', 'category_id'
     ];
+
+    public function orgProject()
+    {
+        return $this->belongsTo(OrgProject::class, 'org_project_id');
+    }
+
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id');

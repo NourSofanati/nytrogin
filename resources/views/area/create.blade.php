@@ -14,8 +14,9 @@
 
                     <label for="name" class="mt-5 block">اسم المنطقة</label>
 
-                    <input class="block border border-gray-400 bg-gray-100 rounded w-full"
-                        placeholder="{{ __('Name') }}" type="text" name="name" id="name" autocomplete="off">
+                    {{-- <input class="block border border-gray-400 bg-gray-100 rounded w-full"
+                        placeholder="{{ __('Name') }}" type="text" name="name" id="name" autocomplete="off"> --}}
+
 
                     <button type="submit"
                         class="bg-[#FCB634] px-4 py-2 rounded block text-[#673B8C] border-[#673B8C] border font-bold mt-5">{{ __('Save') }}

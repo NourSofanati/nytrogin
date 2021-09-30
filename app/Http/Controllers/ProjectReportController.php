@@ -81,7 +81,7 @@ class ProjectReportController extends Controller
      * @param  \App\Models\ProjectReport  $projectReport
      * @return \Illuminate\Http\Response
      */
-    public function edit( $projectReport)
+    public function edit($projectReport)
     {
         $projectReport = ProjectReport::find($projectReport);
         // dd($projectReport);
@@ -109,5 +109,10 @@ class ProjectReportController extends Controller
     public function destroy(ProjectReport $projectReport)
     {
         //
+    }
+    public function pdf(Request $request, ProjectReport $id)
+    {
+        $projectReport = $id;
+        return view('pdf', compact('projectReport'));
     }
 }

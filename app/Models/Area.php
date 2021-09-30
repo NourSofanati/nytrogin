@@ -11,7 +11,17 @@ class Area extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'alias', 'region_id', 'org_project_id'];
+    protected $fillable = ['area_id', 'alias', 'region_id', 'org_project_id'];
+
+    public function area()
+    {
+        return $this->belongsTo(AreaList::class, 'area_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(OrgProject::class, 'org_project_id');
+    }
 
     public function organizations()
     {
@@ -20,7 +30,6 @@ class Area extends Model
 
     public function projects()
     {
-        //return $this->hasMany(Project::class, 'area_id');
         return $this->hasManyThrough(Project::class, City::class);
     }
 

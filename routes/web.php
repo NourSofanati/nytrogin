@@ -14,9 +14,12 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectInspectionController;
 use App\Http\Controllers\ProjectReportController;
 use App\Http\Controllers\UserController;
+use App\Models\Area;
+use App\Models\City;
 use App\Models\InspectionMedia;
 use App\Models\Notification;
 use App\Models\Organization;
+use App\Models\OrgProject;
 use App\Models\Project;
 use App\Models\ProjectReport;
 use App\Models\ReportCheckItem;
@@ -46,6 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('approvals', InspectionApprovalController::class);
     Route::post('create_inspection_report', [ProjectInspectionController::class, 'create_inspection_report'])->name('create_inspection_report');
     Route::resource('reports', ProjectReportController::class);
+    Route::get('reports/{id}/pdf', [ProjectReportController::class, 'pdf'])->name('report_pdf');
     Route::post('city/create_project', [CityController::class, 'create_project'])->name('create_project');
     Route::post('city/projects', [CityController::class, 'show_projects'])->name('show_projects');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -83,6 +87,62 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return response()->json(['status' => '200 OK']);
     })->name('add-comment');
     Route::resource('users', UserController::class);
+    Route::get('notifications', function (Request $request) {
+        $notifications = Notification::all()->where('user_id', auth()->user()->id)->where('read_at', null);
+        return $notifications->toArray();
+    })->name('notifications');
+
+    Route::post('upload_file', function (Request $request) {
+        $data = array();
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:png,jpg,jpeg,csv,txt,pdf,mp4,wmv,mkv,jiff,gif'
+        ]);
+
+        if ($validator->fails()) {
+
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->first('file'); // Error response
+
+        } else {
+            if ($request->file('file')) {
+
+                $file = $request->file('file');
+                $filename = time() . '_' . $file->getClientOriginalName();
+
+                // File extension
+                $extension = $file->getClientOriginalExtension();
+
+                // File upload location
+                $location = 'files';
+
+                // Upload file
+                $file->move($location, $filename);
+
+                // File path
+                $filepath = url('files/' . $filename);
+                InspectionMedia::create([
+                    'user_id' => auth()->user()->id,
+                    'inspection_id' => $request->inspection_id,
+                    'mimeType' => $file->getClientMimeType(),
+                    'url' => $filepath,
+                    'filename' => $filename
+                ]);
+
+                // Response
+                $data['success'] = 1;
+                $data['message'] = 'Uploaded Successfully!';
+                $data['filepath'] = $filepath;
+                $data['extension'] = $extension;
+            } else {
+                // Response
+                $data['success'] = 2;
+                $data['message'] = 'File not uploaded.';
+            }
+        }
+
+        return response()->json($data);
+    })->name('upload_file');
 });
 Route::post('get-comments', function (Request $request) {
     $project = Project::find($request->project_id);
@@ -97,62 +157,6 @@ Route::get('search', function (Request $request) {
     return $articles;
 })->name('search');
 
-Route::get('notifications', function (Request $request) {
-    $notifications = Notification::all()->where('user_id', auth()->user()->id)->where('read_at', null);
-    return $notifications->toArray();
-})->name('notifications');
-
-Route::post('upload_file', function (Request $request) {
-    $data = array();
-
-    $validator = Validator::make($request->all(), [
-        'file' => 'required|mimes:png,jpg,jpeg,csv,txt,pdf,mp4,wmv,mkv,jiff,gif'
-    ]);
-
-    if ($validator->fails()) {
-
-        $data['success'] = 0;
-        $data['error'] = $validator->errors()->first('file'); // Error response
-
-    } else {
-        if ($request->file('file')) {
-
-            $file = $request->file('file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-
-            // File extension
-            $extension = $file->getClientOriginalExtension();
-
-            // File upload location
-            $location = 'files';
-
-            // Upload file
-            $file->move($location, $filename);
-
-            // File path
-            $filepath = url('files/' . $filename);
-            InspectionMedia::create([
-                'user_id' => auth()->user()->id,
-                'inspection_id' => $request->inspection_id,
-                'mimeType' => $file->getClientMimeType(),
-                'url' => $filepath,
-                'filename' => $filename
-            ]);
-
-            // Response
-            $data['success'] = 1;
-            $data['message'] = 'Uploaded Successfully!';
-            $data['filepath'] = $filepath;
-            $data['extension'] = $extension;
-        } else {
-            // Response
-            $data['success'] = 2;
-            $data['message'] = 'File not uploaded.';
-        }
-    }
-
-    return response()->json($data);
-})->name('upload_file');
 
 
 Route::post('attemptLogin', [UserController::class, 'sendOtp'])->name('attemptLogin');
@@ -197,3 +201,27 @@ Route::prefix('charts')->group(function () {
         return response()->json($projects);
     })->name('category_chart');
 });
+
+Route::post('assign_deputy_manager', function (Request $request) {
+    $orgProject = OrgProject::find($request->org_project_id);
+    $orgProject->update($request->all());
+    alert(__('Deputy manager assigned'), '', 'success');
+    return redirect()->back();
+})->name('assign_dep');
+
+Route::post('area_modal', function (Request $request) {
+    $area = Area::create($request->all());
+    alert(__('تم اضافة المنطقة للمشروع'), '', 'success');
+    return redirect()->back();
+})->name('area_modal');
+Route::post('city_modal', function (Request $request) {
+    $city = City::create($request->all());
+    alert(__('تم اضافة المدينة للمشروع'), '', 'success');
+    return redirect()->back();
+})->name('city_modal');
+
+
+Route::get('/reports/{id}/place_json', function (Request $request, ProjectReport $id) {
+
+    return response()->json(['json' => $id->place_json]);
+})->name('place_json');

@@ -42,7 +42,7 @@ class InspectionPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id === Role::IS_INSPECTOR;
+        return $user->role_id == Role::IS_INSPECTOR;
     }
 
     /**

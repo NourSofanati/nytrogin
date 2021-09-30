@@ -51,7 +51,7 @@ class OrganizationProjectController extends Controller
             'notes' => ' ',
             'status' => 'pending_1'
         ]);
-        toast('تم إنشاء مشروع جديد','info');
+        toast('تم إنشاء مشروع جديد', 'info');
         return view('project.step-two', compact('project'));
     }
 
@@ -63,12 +63,13 @@ class OrganizationProjectController extends Controller
      */
     public function show(int $project_id)
     {
+
         $project = OrganizationProject::find($project_id);
         $this->authorize('view', $project);
         $supervisors = $project->assignments->where('assigned_as', 'supervisor');
         $inspectors = $project->assignments->where('assigned_as', 'inspector');
-
         return view('project.show', compact(['project', 'supervisors', 'inspectors']));
+        //Fix the above code
     }
 
     /**

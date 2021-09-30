@@ -29,7 +29,7 @@
                             class="border-2 border-gray-200 rounded w-full">
                     </div>
                     <div class="mt-3">
-                        <label for="phone_number">رقم هاتف الهيئة</label>
+                        <label for="phone_number">رقم جوال الهيئة</label>
                         <input type="text" name="phone_number" id="phone_number" required
                             class="border-2 border-gray-200 rounded w-full">
                     </div>
@@ -41,7 +41,13 @@
         </div>
     </div>
     @section('footerScripts')
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script type="text/javascript">
+            $('#exit_button').click(function(e) {
+                e.preventDefault();
+                $('#addNewTypeModal').addClass('hidden');
+            });
         </script>
     @endsection
 </x-app-layout>

@@ -66,8 +66,9 @@ class OrgProjectController extends Controller
      * @param  \App\Models\OrgProject  $orgProject
      * @return \Illuminate\Http\Response
      */
-    public function edit(OrgProject $orgProject)
+    public function edit($orgProject)
     {
+        $orgProject = OrgProject::find($orgProject);
         return view('org_project.edit', compact('orgProject'));
     }
 
@@ -78,10 +79,11 @@ class OrgProjectController extends Controller
      * @param  \App\Models\OrgProject  $orgProject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrgProject $orgProject)
+    public function update(Request $request,  $orgProject)
     {
+        $orgProject = OrgProject::find($orgProject);
         $orgProject->update($request->all());
-        return redirect()->route('organization_projects.show', $orgProject);
+        return redirect()->route('organization_projects.show', ['organization_project' => $orgProject]);
     }
 
     /**
@@ -90,7 +92,10 @@ class OrgProjectController extends Controller
      * @param  \App\Models\OrgProject  $orgProject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OrgProject $orgProject)
+    public function destroy( $orgProject)
     {
+        $orgProject = OrgProject::find($orgProject);
+        $orgProject->delete();
+        return redirect()->route('dashboard');
     }
 }

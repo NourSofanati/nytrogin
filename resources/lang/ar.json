@@ -1,14 +1,14 @@
 {
-    "admin": "مدير",
-    "inspector": "مراقب",
+    "admin": "Admin",
+    "inspector": "مفتش",
     "supervisor": "مشرف",
     "procurator": "نائب المدير",
-    "organization": "هيئة",
+    "organization": "جهة أُخرى",
     "admins": "المدير",
     "Role": "الصلاحية",
     "procurators": "نائب المدير",
     "supervisors": "المشرفين",
-    "inspectors": "المراقبين",
+    "inspectors": "المفتشين",
     "Project Manager": "مدير المشروع",
     "project_manager": "مدير مشروع",
     "deputy_project_manager": "نائب مدير مشروع",
@@ -49,6 +49,7 @@
     "Permit Expiration Date": "تاريخ انتهاء التصريح",
     "Commercial license ID": "رقم السجل التجاري",
     "Yes": "نعم",
+    "Task Category":"نوع المهمة",
     "No": "لا",
     "N\\A": "لا ينطبق",
     "YES": "نعم",
@@ -61,5 +62,10 @@
     "Completed projects": "مشاريع منجزة",
     "Write your notes here": "اكتب ملاحظاتك هنا",
     "Recommendations": "التوصيات",
-    "Write your recommendations here":"اكتب توصياتك هنا"
+    "Write your recommendations here": "اكتب توصياتك هنا",
+    "Assign as deputy project manager": "تعيين كنائب مدير مشروع",
+    "Are you sure you want to delete this project?": "هل انت متأكد من انك تريد حذف هذا المشروع؟",
+    "Location": "العنوان",
+    "Deputy manager assigned": "تم تعيين نائب مدير المشروع",
+    "Add area":"إضافة منطقة"
 }

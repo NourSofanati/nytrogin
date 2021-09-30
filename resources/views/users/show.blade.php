@@ -37,8 +37,9 @@
                         placeholder="{{ __('Email') }}" type="email" name="email" id="email" autocomplete="off"
                         value="{{ $user->email }}" /> --}}
 
-                    <select name="area_id" id="area_id" class="block border border-gray-400 bg-gray-100 rounded w-full">
-                        <option>---</option>
+                    <select name="area_id" id="area_id" class="block border border-gray-400 bg-gray-100 rounded w-full"
+                        required>
+                        <option value="null">---</option>
                         @foreach (\App\Models\Area::all() as $area)
                             <option value="{{ $area->id }}" {{ $user->area_id == $area->id ? 'selected' : '' }}>
                                 {{ $area->name }}</option>
@@ -46,7 +47,7 @@
                     </select>
 
 
-                    <label for="phone_number" class="mt-5 block">{{ __('رقم الهاتف') }}</label>
+                    <label for="phone_number" class="mt-5 block">{{ __('رقم الجوال') }}</label>
                     <div class="relative">
                         <div class="absolute top-0 bottom-0 left-0 flex">
                             <span dir="ltr" class="my-auto pl-2 pr-1 border-r-2 border-gray-300">
@@ -62,15 +63,17 @@
 
 
 
-                    <label for="name" class="mt-5 block">{{ __('Role') }}</label>
-                    <select name="role_id" id="role_id" class=" border-gray-400 bg-gray-100 rounded w-1/2">
+                    <label for="name" class="mt-5 block w-full">{{ __('Role') }}</label>
+                    <select name="role_id" id="role_id" class=" border-gray-400 bg-gray-100 rounded w-full">
                         @foreach (\App\Models\Role::all() as $role)
-                            <option value="{{ $role->id }}" {{ $role->id == $user->role_id ? 'selected' : '' }}>
-                                {{ __($role->name) }}</option>
+                            @can('view', $role)
+
+                                <option value="{{ $role->id }}" {{ $role->id == $user->role_id ? 'selected' : '' }}>
+                                    {{ __($role->name) }}</option>
+                            @endcan
                         @endforeach
                     </select>
-                    <div class="w-1/2 {{ $user->role_id == \App\Models\Role::IS_INSPECTOR ? '' : 'hidden' }}"
-                        id="specialization_form">
+                    <div class="w-full" id="specialization_form">
                         <label for="specialization" class="mt-5 block">
                             {{ __('الوظيفة') }}</label>
                         <input type="text" name="specialization" id="specialization"
@@ -85,14 +88,6 @@
         </div>
     </div>
     @push('custom-scripts')
-        <script type="text/javascript">
-            $('#role_id').change(function(event) {
-                if (event.target.value == 4) {
-                    $('#specialization_form').fadeIn();
-                } else {
-                    $('#specialization_form').fadeOut();
-                }
-            })
-        </script>
+
     @endpush
 </x-app-layout>

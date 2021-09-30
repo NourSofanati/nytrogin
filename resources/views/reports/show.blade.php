@@ -1,15 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-
-        </h2>
+        <button class="bg-indigo-500 text-white text-lg font-bold shadow px-4 py-2 rounded-xl flex gap-4"
+            id="printButton"><span class="material-icons">print</span><span>طباعة</span></button>
     </x-slot>
 
-    <div class=" xl:p-8 p-4">
-
-        <div class="bg-[#FCB634] text-3xl py-4 text-center tracking-tighter text-[#673B8C] font-semibold rounded-xl">
-            التفتيش على الفعاليات الترفيهية
-        </div>
+    <div class="p-6">
 
         <div class="flex justify-end mt-5">
             @if ($report->user->id == auth()->user()->id)
@@ -68,8 +63,15 @@
         <form method="POST" enctype="multipart/form-data" action="{{ route('reports.store') }}">
             @csrf
 
-            <div class="mt-3 border-2 bg-white rounded-xl py-4 px-2 text-lg grid grid-cols-2">
-                <div class=" flex flex-col gap-4 w-full xl:w-1/2 p-5">
+            <div class="border-2 my-5 border-dashed p-5">
+                <header class="flex">
+                    <div class="justify-start">
+                        <h1
+                            class="text-3xl text-gray-700 border-b-2 pb-2 border-dashed  border-gray-400 pl-[3.2rem] mr-2">
+                            التفاصيل</h1>
+                    </div>
+                </header>
+                <div class=" flex flex-col gap-4 w-full  p-5">
                     <div class="border-b py-2">
                         {{ __('Inspector Name') }} : {{ $report->user->name }}
                     </div>
@@ -78,7 +80,14 @@
                     </div>
                     <div class="border-b py-2">
                         {{ __('City / State') }} :
-                        {{ $report->project->city->name . ' / ' . $report->project->city->area->name }}
+                        {{ $report->project->city->name . ' / ' . $report->project->city->area->area->name }}
+                    </div>
+                    <div class="border-b py-2">
+                        {{ __('Location') }} :
+                        {{ $report->location }}
+                    </div>
+                    <div id="map"
+                        class="col-span-full h-[250px] hover:shadow-xl rounded-xl transition-all duration-150 hover:scale-105">
                     </div>
                     <div class="border-b py-2">
                         {{ __('Inspection Date') }} : {{ $report->report_date }}
@@ -189,7 +198,9 @@
 
     @push('custom-scripts')
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+        <script async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKt6rV3HX9odJ6RkStewHB_MU2zhS8oMA&libraries=places&callback=initMap&language=ar&region=SA">
+        </script>
         <script>
             $('[data-attachmentShow]').click(function(e) {
                 e.preventDefault();
@@ -216,6 +227,67 @@
                 $('#attachmentsModal').addClass('hidden');
                 $('#attachments-display').html('');
             });
+            $('#printButton').click(function(e) {
+                e.preventDefault();
+                var strWindowFeatures = "location=yes,scrollbars=yes,status=yes";
+                let pdfWindow = window.open(window.location.href + (window.location.href[window.location.href.length -
+                    1] == '/' ? '' : '/') + 'pdf', '_blank', strWindowFeatures);
+                pdfWindow.onload = () => {
+                    // pdfWindow.print();
+                }
+                pdfWindow.onafterprint = () => {
+                    pdfWindow.close();
+                }
+            })
+
+            function initMap() {
+                const input = document.getElementById("location");
+                const options = {
+                    componentRestrictions: {
+                        country: "sa"
+                    },
+                    fields: ["address_components", "geometry", "icon", "name"],
+                    strictBounds: false,
+                };
+                // const autocomplete = new google.maps.places.Autocomplete(input, options);
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 4,
+                    center: {
+                        lat: 23.794850198707053,
+                        lng: 45.14557369331874
+                    },
+                });
+                const marker = new google.maps.Marker({
+                    map
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('place_json', $report) }}",
+
+                    success: function(response) {
+                        console.log(response);
+                        marker.setVisible(false);
+                        const place = JSON.parse(response.json);
+                        if (!place.geometry || !place.geometry.location) {
+                            // User entered the name of a Place that was not suggested and
+                            // pressed the Enter key, or the Place Details request failed.
+                            window.alert("No details available for input: '" + place.name + "'");
+                            return;
+                        }
+
+                        // If the place has a geometry, then present it on a map.
+                        if (place.geometry.viewport) {
+                            map.fitBounds(place.geometry.viewport);
+                        } else {
+                            map.setCenter(place.geometry.location);
+                            map.setZoom(17);
+                        }
+                        $('#place_json').val(JSON.stringify(place));
+                        marker.setPosition(place.geometry.location);
+                        marker.setVisible(true);
+                    }
+                });
+            }
         </script>
     @endpush
 </x-app-layout>

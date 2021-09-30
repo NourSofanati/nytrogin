@@ -31,7 +31,7 @@ class RolePolicy
     public function view(User $user, Role $role)
     {
         if ($user->role->name == 'admin') return true;
-        return $user->role_id < $role->id;
+        return $user->role_id <= $role->id;
     }
 
     /**

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -50,7 +51,7 @@ class UserController extends Controller
             $otp = rand(10000, 99999);
             $user->otp = $otp;
             $user->save();
-            $this->otpSMS($otp, $user->phone_number);
+            // $this->otpSMS($otp, $user->phone_number);
             Log::info("OTP IS " . $otp);
             return response()->json(array('status' => 'success', 'user_id' => $user->id));
         } else {
@@ -87,6 +88,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
+            'created_by' => auth()->user()->id,
         ]);
         return redirect()->route('users.index');
     }
@@ -98,15 +100,20 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $user->update($request->all());
+        if ($request->area_id == 'null') {
+            $user->update($request->except('area_id'));
+            $user->update(['area_id' => null]);
+        } else {
+            $user->update($request->all());
+        }
         $user->save();
-        toast('تم حفظ المستخدم', 'success');
+        Alert::success('تم حفظ المستخدم');
         return redirect()->back();
     }
     public function destroy(User $user)
     {
         $user->delete();
-        toast('تم حذف المستخدم ' . $user->name, 'danger');
+        Alert::danger('تم حذف المستخدم ' . $user->name, 'danger');
         return redirect()->route('users.index');
     }
 }

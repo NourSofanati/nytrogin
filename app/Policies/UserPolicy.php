@@ -30,7 +30,12 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        if ($user->id == $model->id) return true;
+        if ($user->role->name == 'admin') return true;
+        if ($model->created_by == $user->id) {
+            return true;
+        }
+        return false;
     }
 
     /**

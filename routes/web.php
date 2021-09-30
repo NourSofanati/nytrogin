@@ -209,6 +209,13 @@ Route::post('assign_deputy_manager', function (Request $request) {
     return redirect()->back();
 })->name('assign_dep');
 
+Route::post('assign_supervisor', function (Request $request) {
+    $orgProject = OrgProject::find($request->org_project_id);
+    $orgProject->update($request->all());
+    alert(__('تم تعيين المشرف'), '', 'success');
+    return redirect()->back();
+})->name('assign_supervisor');
+
 Route::post('area_modal', function (Request $request) {
     $area = Area::create($request->all());
     alert(__('تم اضافة المنطقة للمشروع'), '', 'success');

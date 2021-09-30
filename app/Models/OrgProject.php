@@ -39,4 +39,13 @@ class OrgProject extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+    public function newReports()
+    {
+        $reports = 0;
+        foreach ($this->areas as $area) {
+            $reports += $area->projects->where('status', '!=', 'done_5')->count();
+        }
+        return $reports;
+    }
 }

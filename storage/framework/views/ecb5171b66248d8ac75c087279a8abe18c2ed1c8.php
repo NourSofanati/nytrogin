@@ -58,9 +58,9 @@
                 <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
                 <span>مدير المشروع: <?php echo e($orgProject->manager->name); ?></span>
                 <?php if(auth()->user()->role->name == 'admin'): ?>
-                    ,&nbsp;<a href=""
-                        class="text-green-500 hover:text-green-600 hover:drop-shadow-xl transition-all duration-100 ">إعادة
-                        تعيين مدير مشروع</a>
+                    ,&nbsp;<span id="showAssignManager"
+                        class="text-green-500 hover:text-green-600 hover:drop-shadow-xl transition-all duration-100 cursor-pointer ">إعادة
+                        تعيين مدير مشروع</span>
                 <?php endif; ?>
             </div>
             <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
@@ -80,6 +80,27 @@
                             , <span id="showAssignDeputy"
                                 class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">تعيين
                                 نائب مدير مشروع</span>
+                        <?php endif; ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+            <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
+                <?php if($orgProject->supervisor): ?>
+                    <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
+                    <span>المشرف: <?php echo e($orgProject->supervisor->name); ?></span>
+                    <?php if(auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id): ?>
+                        &nbsp;, <span id="showAssignSupervisor"
+                            class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">إعادة
+                            تعيين
+                            مشرف</span>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <span class="material-icons text-[#ff611d] my-auto ml-2">warning</span>
+                    <span>لا يوجد نائب مدير للمشروع
+                        <?php if(auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id): ?>
+                            , <span id="showAssignSupervisor"
+                                class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">تعيين
+                                مشرف</span>
                         <?php endif; ?>
                     </span>
                 <?php endif; ?>
@@ -107,7 +128,7 @@
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <?php endif; ?>
-            <?php if(\App\Models\Area::all()->count() > $orgProject->areas->count()): ?>
+            <?php if(\App\Models\AreaList::all()->count() > $orgProject->areas->count()): ?>
                 <div id="showAddArea"
                     class="border-4 p-5 border-dashed max-h-[150px] min-h-[150px] rounded cursor-pointer bg-[#F0F0F7] flex justify-center transition-all duration-150 hover:shadow-xl hover:scale-105">
                     <span class="my-auto mx-auto text-green-500 font-bold text-2xl flex">
@@ -120,10 +141,10 @@
     </div>
     <?php echo $__env->make('org_project.modals.projectsModals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('org_project.modals.assignDeputyModal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('org_project.modals.assignSupervisor', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('org_project.modals.assignManagerModal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('org_project.modals.addArea', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
     <?php $__env->startPush('custom-scripts'); ?>
-        
         <script>
 
 

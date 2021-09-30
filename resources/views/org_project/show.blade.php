@@ -52,9 +52,9 @@
                 <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
                 <span>مدير المشروع: {{ $orgProject->manager->name }}</span>
                 @if (auth()->user()->role->name == 'admin')
-                    ,&nbsp;<a href=""
-                        class="text-green-500 hover:text-green-600 hover:drop-shadow-xl transition-all duration-100 ">إعادة
-                        تعيين مدير مشروع</a>
+                    ,&nbsp;<span id="showAssignManager"
+                        class="text-green-500 hover:text-green-600 hover:drop-shadow-xl transition-all duration-100 cursor-pointer ">إعادة
+                        تعيين مدير مشروع</span>
                 @endif
             </div>
             <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
@@ -74,6 +74,27 @@
                             , <span id="showAssignDeputy"
                                 class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">تعيين
                                 نائب مدير مشروع</span>
+                        @endif
+                    </span>
+                @endif
+            </div>
+            <div class="bg-[#673e890a] p-5 flex border-2 rounded-md shadow-inner">
+                @if ($orgProject->supervisor)
+                    <span class="material-icons my-auto ml-2 text-green-500 scale-110">person</span>
+                    <span>المشرف: {{ $orgProject->supervisor->name }}</span>
+                    @if (auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id)
+                        &nbsp;, <span id="showAssignSupervisor"
+                            class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">إعادة
+                            تعيين
+                            مشرف</span>
+                    @endif
+                @else
+                    <span class="material-icons text-[#ff611d] my-auto ml-2">warning</span>
+                    <span>لا يوجد نائب مدير للمشروع
+                        @if (auth()->user()->role->name == 'admin' || $orgProject->manager->id == auth()->user()->id)
+                            , <span id="showAssignSupervisor"
+                                class="text-green-500 hover:text-green-600 cursor-pointer hover:drop-shadow-xl transition-all duration-100 ">تعيين
+                                مشرف</span>
                         @endif
                     </span>
                 @endif
@@ -114,11 +135,10 @@
     </div>
     @include('org_project.modals.projectsModals')
     @include('org_project.modals.assignDeputyModal')
+    @include('org_project.modals.assignSupervisor')
+    @include('org_project.modals.assignManagerModal')
     @include('org_project.modals.addArea')
-
     @push('custom-scripts')
-        {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"
-                integrity="sha256-bC3LCZCwKeehY6T4fFi9VfOU0gztUa+S4cnkIhVPZ5E=" crossorigin="anonymous"></script> --}}
         <script>
 
 

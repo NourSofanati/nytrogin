@@ -13,10 +13,10 @@ class DashboardController extends Controller
         $areas = Area::all();
         $projects = Project::all();
 
-        $completedProjects = $projects->where('status', 'done_5');
-        $inProgressProjects = Project::whereHas('inspections')->where('status', '!=', 'done_5')->get();
-        $newProjects = Project::doesntHave('inspections')->get();
 
+        $completedProjects = Project::where('status', 'done_5')->get();
+        $inProgressProjects = Project::whereHas('reports')->where('status', '!=', 'done_5')->get();
+        $newProjects = Project::doesntHave('reports')->get();
         return view('dashboard', compact('areas', 'completedProjects', 'inProgressProjects', 'newProjects'));
     }
 }

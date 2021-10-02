@@ -68,7 +68,9 @@
                                 name="location" id="location" required>
                             <input type="hidden" name="place_json" id="place_json">
                         </div>
-                        <div id="map" class="col-span-full h-[250px] hover:shadow-xl rounded-xl transition-all duration-150 hover:scale-105"></div>
+                        <div id="map"
+                            class="col-span-full h-[250px] hover:shadow-xl rounded-xl transition-all duration-150 hover:scale-105">
+                        </div>
                         <div class="grid grid-cols-4">
                             <label class="my-auto" for="report_date"><?php echo e(__('Inspection Date')); ?></label>
                             <input type="date" name="report_date" id="report_date" required
@@ -177,7 +179,7 @@
     <?php $__env->startPush('custom-scripts'); ?>
 
         <script async
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKt6rV3HX9odJ6RkStewHB_MU2zhS8oMA&libraries=places&callback=initMap&language=ar&region=SA">
+                src="https://maps.googleapis.com/maps/api/js?key=<?php echo e(config('app.mapsapi')); ?>&libraries=places&callback=initMap&language=ar&region=SA">
         </script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
